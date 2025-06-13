@@ -1,0 +1,71 @@
+lockfileVersion: '9.0'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
+importers:
+
+  .:
+    dependencies:
+      '@trpc/client':
+        specifier: ^11.4.0
+        version: 11.4.0(@trpc/server@11.4.0(typescript@5.8.3))(typescript@5.8.3)
+      '@trpc/server':
+        specifier: ^11.4.0
+        version: 11.4.0(typescript@5.8.3)
+      zod:
+        specifier: ^3.25.63
+        version: 3.25.63
+    devDependencies:
+      '@types/node':
+        specifier: ^24.0.1
+        version: 24.0.1
+
+packages:
+
+  '@trpc/client@11.4.0':
+    resolution: {integrity: sha512-AI+qThLuR52ALsMN/oEjgmw101c54YV6XoXSRyVGzO29kLUgo7PUBnvdq51x2rl57z7tg4AG8U2CvkDWdn00vw==}
+    peerDependencies:
+      '@trpc/server': 11.4.0
+      typescript: '>=5.7.2'
+
+  '@trpc/server@11.4.0':
+    resolution: {integrity: sha512-ubE5LgMQuVH5PKcaFq0JJaHbAT3bBV8m1rdlLYEDjJG85zGrYak+6YkXIzUct/LYYXNg/FgyGrqOTM2FyzAlhQ==}
+    peerDependencies:
+      typescript: '>=5.7.2'
+
+  '@types/node@24.0.1':
+    resolution: {integrity: sha512-MX4Zioh39chHlDJbKmEgydJDS3tspMP/lnQC67G3SWsTnb9NeYVWOjkxpOSy4oMfPs4StcWHwBrvUb4ybfnuaw==}
+
+  typescript@5.8.3:
+    resolution: {integrity: sha512-p1diW6TqL9L07nNxvRMM7hMMw4c5XOo/1ibL4aAIGmSAt9slTE1Xgw5KWuof2uTOvCg9BY7ZRi+GaF+7sfgPeQ==}
+    engines: {node: '>=14.17'}
+    hasBin: true
+
+  undici-types@7.8.0:
+    resolution: {integrity: sha512-9UJ2xGDvQ43tYyVMpuHlsgApydB8ZKfVYTsLDhXkFL/6gfkp+U8xTGdh8pMJv1SpZna0zxG1DwsKZsreLbXBxw==}
+
+  zod@3.25.63:
+    resolution: {integrity: sha512-3ttCkqhtpncYXfP0f6dsyabbYV/nEUW+Xlu89jiXbTBifUfjaSqXOG6JnQPLtqt87n7KAmnMqcjay6c0Wq0Vbw==}
+
+snapshots:
+
+  '@trpc/client@11.4.0(@trpc/server@11.4.0(typescript@5.8.3))(typescript@5.8.3)':
+    dependencies:
+      '@trpc/server': 11.4.0(typescript@5.8.3)
+      typescript: 5.8.3
+
+  '@trpc/server@11.4.0(typescript@5.8.3)':
+    dependencies:
+      typescript: 5.8.3
+
+  '@types/node@24.0.1':
+    dependencies:
+      undici-types: 7.8.0
+
+  typescript@5.8.3: {}
+
+  undici-types@7.8.0: {}
+
+  zod@3.25.63: {}
