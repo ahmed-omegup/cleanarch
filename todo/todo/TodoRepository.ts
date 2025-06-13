@@ -1,10 +1,6 @@
-
-export type TodoRaw = {
-  label: string;
-  completed: boolean;
-};
+import { Todo } from "./Todo";
 
 export interface TodoRepository<TodoRef> {
-  save(todo: TodoRaw): Promise<TodoRef>;
-  get(ref: TodoRef): Promise<TodoRaw | null>;
+  save(todo: Todo): Promise<TodoRef>;
+  get(ref: TodoRef): Promise<Todo | null>;
 }

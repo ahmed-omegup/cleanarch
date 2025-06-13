@@ -32,7 +32,7 @@ export const makeRouter = <Ref>(mutaters: Mutations<Ref>, queries: Queries<Ref>)
       type Req = R extends Route<infer Req, infer _> ? Req : never
       return mapMutationToProcedure(route as Route<Req, Res>) as MutationProcedures[typeof k]
     }),
-    ...mapObject<Queries<Ref>, QueryProcedures>(mutaters, (route, k) => {
+    ...mapObject<Queries<Ref>, QueryProcedures>(queries, (route, k) => {
       type R = typeof route
       type Res = R extends Route<infer _, infer Res> ? Res : never
       type Req = R extends Route<infer Req, infer _> ? Req : never

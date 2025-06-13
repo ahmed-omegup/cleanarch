@@ -3,13 +3,13 @@ import { CreateTodoService } from "../../create-todo/controller/CreateTodoServic
 import { CreateTodoFactory } from "../../create-todo/interactor";
 import { CreateTodoInteractor } from "../../create-todo/interactor/CreateTodoInteractor";
 import { createTodoRoute } from "../../create-todo/controller/CreateTodoRoute";
-import { TodoRaw, TodoRepository } from "../../todo";
+import { Todo, TodoRepository } from "../../todo";
 import { makeRouter } from "./server";
 import { API } from "../shared/config";
 
 export type IdRef = { id: string };
 
-const todos = new Map<string, TodoRaw>();
+const todos = new Map<string, Todo>();
 
 const todoRepository: TodoRepository<IdRef> = {
     save: async (todo) => {

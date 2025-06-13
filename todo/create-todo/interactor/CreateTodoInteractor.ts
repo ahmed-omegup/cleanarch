@@ -10,7 +10,7 @@ export class CreateTodoInteractor<TodoRef> implements CreateTodo {
     }
 
     const todo = new Todo(input.label, false);
-    const ref = await this.todoRepository.save({ label: todo.title, completed: todo.completed });
+    const ref = await this.todoRepository.save(todo);
     this.presenter.render({ success: true, todo, ref });
   }
 }
