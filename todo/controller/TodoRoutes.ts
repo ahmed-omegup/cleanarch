@@ -1,26 +1,25 @@
-import { z } from 'zod'
-import { createRoute, Route } from '../network/server/schema'
-import { TodoController, CreateTodoRequest, CreateTodoResponse } from './TodoController'
+import { z } from "zod";
+import { createRoute, MRoutes, Route } from "../../utils/route";
+import {
+  TodoController,
+  CreateTodoRequest,
+  CreateTodoResponse,
+} from "./TodoController";
 
-type Mutations<TodoRef> = {
-  createTodo: Route<CreateTodoRequest, CreateTodoResponse<TodoRef>>
-}
-type Queries<TodoRef> = {
-}
+type Mutations = {
+  createTodo: { request: CreateTodoRequest; response: CreateTodoResponse };
+};
+type Queries = {};
 
-type Routes<TodoRef> = {
-  mutations: Mutations<TodoRef>,
-  queries: Queries<TodoRef>
-}
 
-export const todoRoutes = <TodoRef>(controller: TodoController<TodoRef>): Routes<TodoRef> => ({
+type Routes = MRoutes<Mutations, Queries>
+
+export const todoRoutes = (controller: TodoController): Routes => ({
   mutations: {
-    createTodo: createRoute<CreateTodoRequest, CreateTodoResponse<TodoRef>>({
+    createTodo: createRoute<CreateTodoRequest, CreateTodoResponse>({
       request: z.object({ label: z.string() }),
-      exec: { handle: input => controller.createTodo(input), },
-    })
+      exec: { handle: (input) => controller.createTodo(input) },
+    }),
   },
-  queries: {
-
-  }
-})
+  queries: {},
+});
