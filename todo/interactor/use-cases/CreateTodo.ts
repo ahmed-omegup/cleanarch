@@ -1,15 +1,15 @@
 import { Todo } from "../../todo";
 
-export type CreateTodoOutput<TodoRef> =
+export type CreateTodoOutput<TodoRef, E> =
   | { success: true; todo: Todo; ref: TodoRef }
-  | { success: false; error: 'EmptyLabel' };
+  | { success: false; error: 'EmptyLabel' | E };
 
 export interface CreateTodoInput {
   label: string;
 }
 
-export interface CreateTodoPresenter<TodoRef> {
-  render(output: CreateTodoOutput<TodoRef>): void;
+export interface CreateTodoPresenter<TodoRef, E = never> {
+  render(output: CreateTodoOutput<TodoRef, E>): void;
 }
 
 export interface CreateTodoInteractor {

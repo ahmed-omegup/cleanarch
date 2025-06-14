@@ -1,19 +1,32 @@
-import { useController, View } from "../../utils/view";
+import { useMemo, useState } from "react";
 import {
   CreateTodoRequest,
-  CreateTodoResponse,
-} from "../controller/TodoController";
-type State = { message: string };
+} from "../controller/ports/TodoController";
+import { CreateTodoResponse } from "../presenter/ports/TodoPresenterFactory";
+
+type View<T> = { render: (response: T) => void; }
+
 export type AddTodoDI = {
-  createTodo: (view: View<State, CreateTodoResponse>) => {
+  createTodo: (view: View<CreateTodoResponse>) => {
     run: (todo: CreateTodoRequest) => void;
   };
 };
 export const AddTodo = (di: AddTodoDI) => {
   return function AddTodo(props: { close: () => void }) {
-    const [output, createTodo] = useController(di.createTodo, (res) => {
-      if (res.success) props.close();
-    });
+    const [output, setOutput] = useState<{ message: string }>();
+    const createTodo = useMemo(() => {
+      const view: View<CreateTodoResponse> = {
+        render: (res) => {
+          if (res.success) props.close();
+          setOutput(
+            res.success
+              ? undefined
+              : { message: res.error === 'EmptyLabel' ? "Todo can't be empty" : "Unknown error occurred" }
+          );
+        }
+      }
+      return di.createTodo(view);
+    }, [di.createTodo]);
     const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       const title = new FormData(e.currentTarget).get("title") as string;

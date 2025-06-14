@@ -1,32 +1,16 @@
-import { TodoInteractorFactory } from "../interactor";
-import { TodoController, CreateTodoRequest, CreateTodoResponse } from "./TodoController";
+import { CreateTodoPresenter, TodoInteractorFactory } from "../interactor";
+import { CreateTodoController, CreateTodoRequest } from "./ports/TodoController";
+import { TodoControllerFactory } from "./ports/TodoControllerFactory";
 
-export type Encoder<T> = {
-  encode: (x: T)=> string
-  decode: (x: string)=> T
-}
-export class TodoService<TodoRef> implements TodoController {
+export class TodoService<TodoRef> implements TodoControllerFactory<TodoRef> {
   constructor(
     private readonly interactorFactory: TodoInteractorFactory<TodoRef>,
-    private readonly refEncoder: Encoder<TodoRef>
   ) { }
 
-  createTodo(input: CreateTodoRequest) {
-    return new Promise<CreateTodoResponse>((resolve) => {
-      const createTodo = this.interactorFactory.createTodo.make({
-        presenter: {
-          render: (output) => {
-            if (output.success) {
-              resolve({ success: true, ref: this.refEncoder.encode(output.ref) });
-            } else {
-              resolve({ success: false, error: output.error });
-            }
-          }
-        }
-      });
-      createTodo.execute({
-        label: input.label,
-      });
-    })
+  createTodo(presenter: CreateTodoPresenter<TodoRef>): CreateTodoController {
+    const createTodo = this.interactorFactory.createTodo.make({ presenter })
+    return {
+      run: (input: CreateTodoRequest) => createTodo.execute({ label: input.label, })
+    }
   }
 }

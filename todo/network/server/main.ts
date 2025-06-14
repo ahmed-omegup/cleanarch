@@ -1,5 +1,6 @@
 import { createHTTPServer } from "@trpc/server/adapters/standalone";
-import { Encoder, TodoService } from "../../controller/TodoService";
+import { TodoService } from "../../controller/TodoService";
+import { TodoPresenterImpl, Encoder } from "../../presenter/TodoPresenterImpl";
 import { TodoInteractorFactory } from "../../interactor";
 import { CreateTodoInteractorImpl } from "../../interactor/use-cases-impl";
 import { todoRoutes } from "../../controller/TodoRoutes";
@@ -33,11 +34,14 @@ const refEncoder: Encoder<IdRef> = {
   decode: (id) => ({ id }),
   encode: ({ id }) => id,
 };
-const createTodo = todoRoutes(new TodoService(todoFactory, refEncoder));
-const router = makeRouter(createTodo);
+
+const todoPresenter = new TodoPresenterImpl<IdRef>(refEncoder);
+
+const routes = todoRoutes(new TodoService(todoFactory), todoPresenter);
+const router = makeRouter(routes);
 export type AppRouter = typeof router;
 const { host, port } = API;
 const HOST = `http://${host}:${port}`;
-createHTTPServer({   middleware: cors(),router }).listen({ host, port }, () => {
+createHTTPServer({ middleware: cors(), router }).listen({ host, port }, () => {
   console.log(`Server is running on ${HOST}`);
 });

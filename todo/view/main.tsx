@@ -1,15 +1,22 @@
 import { createRoot } from "react-dom/client";
 import { TodoApp as TodoAppHoc } from "./TodoApp";
-import { createTodoClient } from "../controller/CreateTodoClient";
+import { todoClient } from "../network/client/TodoClient";
+import { Encoder, TodoPresenterImpl } from "../presenter/TodoPresenterImpl";
+import { IdRef } from "../network/server/main";
+
+const refEncoder: Encoder<IdRef> = {
+  decode: (id) => ({ id }),
+  encode: ({ id }) => id,
+};
 
 const TodoApp = TodoAppHoc({
   createTodo: (view) => {
     return {
       run: async (input) => {
-        const res = await createTodoClient.createTodo(input);
-        view.onAction(res);
-        const errors = { EmptyLabel: "Todo can't be empty", UnknownError: "Unknown error occurred" };
-        view.render(res.success ? undefined : { message: errors[res.error] });
+        const ctr = todoClient(refEncoder)
+        const presenterFactory = new TodoPresenterImpl<IdRef>(refEncoder)
+        const presenter = presenterFactory.createTodo(view)
+        ctr.createTodo({ render: model => presenter.render(model) }).run(input)
       },
     };
   },
