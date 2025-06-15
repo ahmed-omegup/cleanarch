@@ -1,0 +1,39 @@
+import { useEffect, useMemo, useReducer, useState } from "react";
+import { ListTodoRequest } from "./controller";
+import { ListTodoPresenterOutput, TodoDTO } from "./presenter";
+
+
+export type ListTodoDI = {
+  listTodo: (presenter: ListTodoPresenterOutput) => {
+    run: (todo: ListTodoRequest) => void;
+  };
+};
+
+export const ListTodo = (di: ListTodoDI) => {
+  return function ListTodo() {
+    const [job, refresh] = useReducer(() => ({}), {})
+    const [todos, setTodos] = useState<{ job: {}, list: TodoDTO[] }>();
+    useEffect(() => {
+      di.listTodo({
+        render(response) {
+          setTimeout(() => {
+            setTodos({ job, list: response.list });
+          }, 100)
+        }
+      }).run({});
+    }, [job]);
+    return (
+      <ul>
+        {todos?.job !== job ? <li>Loading...</li> : todos.list.length === 0 ? <li>No todos found</li> : todos.list.map((todo) => (
+          <li key={todo.id}>
+            <label>
+              <input type='checkbox' checked={todo.completed} readOnly />
+              <span>{todo.label}</span>
+            </label>
+          </li>
+        ))}
+        <button onClick={refresh}>Refresh</button>
+      </ul>
+    );
+  };
+};

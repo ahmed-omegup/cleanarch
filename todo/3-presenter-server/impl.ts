@@ -1,8 +1,8 @@
 import { CreateTodoInteractorOutput, ListTodoInteractorOutput } from "./interactor";
 import { Encoder, ListTodoPresenterOutput } from "./ports";
-import { CreateTodoPresenterOutput, TodoPresenterFactory } from "./ports";
+import { CreateTodoPresenterOutput, ServerTodoPresenterFactory } from "./ports";
 
-export class ServerTodoPresenter<TodoRef> implements TodoPresenterFactory<TodoRef> {
+export class ServerTodoPresenter<TodoRef> implements ServerTodoPresenterFactory<TodoRef> {
   constructor(
     private readonly refEncoder: Encoder<TodoRef>,
   ) { }

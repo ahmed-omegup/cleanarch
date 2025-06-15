@@ -2,7 +2,7 @@ import { Todo } from "../entities";
 
 export type CreateTodoOutput<TodoRef> =
   | { success: true; todo: Todo; ref: TodoRef }
-  | { success: false; error: 'EmptyLabel' | 'StoringError' };
+  | { success: false; error: 'EmptyLabel' | 'StoringError' | 'UnknownError' };
 
 export interface CreateTodoInput {
   label: string;

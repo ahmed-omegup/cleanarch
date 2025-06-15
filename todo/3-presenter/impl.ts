@@ -2,15 +2,16 @@ import { CreateTodoInteractorOutput, ListTodoInteractorOutput } from "./interact
 import { Encoder, ListTodoPresenterOutput } from "./ports";
 import { CreateTodoPresenterOutput, TodoPresenterFactory } from "./ports";
 
-export class ServerTodoPresenter<TodoRef> implements TodoPresenterFactory<TodoRef> {
+export class TodoPresenter<TodoRef> implements TodoPresenterFactory<TodoRef> {
   constructor(
     private readonly refEncoder: Encoder<TodoRef>,
   ) { }
 
   createTodo(view: CreateTodoPresenterOutput): CreateTodoInteractorOutput<TodoRef> {
     const errors = {
-      EmptyLabel: 'EmptyLabel',
-      StoringError: 'UnknownError',
+      EmptyLabel: 'Label Can\'t be empty',
+      StoringError: 'Unknown Error while storing',
+      UnknownError: 'Unknown Error'
     } as const
     return {
       render: (response) => view.render(response.success ?

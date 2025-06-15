@@ -1,1 +1,1 @@
-export * from "../3-presenter"
+export * from "../3-presenter-server";

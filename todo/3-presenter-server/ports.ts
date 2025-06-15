@@ -27,7 +27,7 @@ export interface ListTodoPresenterOutput {
   render(response: ListTodoResponse): void;
 }
 
-export interface TodoPresenterFactory<TodoRef> {
+export interface ServerTodoPresenterFactory<TodoRef> {
   createTodo(view: CreateTodoPresenterOutput): CreateTodoInteractorOutput<TodoRef>;
   listTodo(view: ListTodoPresenterOutput): ListTodoInteractorOutput<TodoRef>;
 }

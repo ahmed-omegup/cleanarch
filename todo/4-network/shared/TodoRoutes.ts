@@ -1,24 +1,31 @@
 import { z } from "zod";
 import { createRoute, MRoutes } from "../../../utils/route";
-import { CreateTodoRequest, TodoControllerFactory } from "../controller";
-import { CreateTodoResponse, TodoPresenterFactory } from "../presenter";
+import { CreateTodoRequest, ListTodoRequest, TodoControllerFactory } from "../controller";
+import { CreateTodoResponse, ListTodoResponse, ServerTodoPresenterFactory } from "../presenter";
 
 export type Mutations = {
   createTodo: { request: CreateTodoRequest; response: CreateTodoResponse };
 };
-export type Queries = {};
+export type Queries = {
+  listTodo: { request: ListTodoRequest; response: ListTodoResponse };
+};
 
 
 type Routes = MRoutes<Mutations, Queries>
 
-export const todoRoutes = <TodoRef>(controller: TodoControllerFactory<TodoRef>, presenter: TodoPresenterFactory<TodoRef>): Routes => ({
+export const todoRoutes = <TodoRef>(controller: TodoControllerFactory<TodoRef>, presenter: ServerTodoPresenterFactory<TodoRef>): Routes => ({
   mutations: {
     createTodo: createRoute<CreateTodoRequest, CreateTodoResponse>({
       request: z.object({ label: z.string() }),
       exec: { handle: (input) => new Promise<CreateTodoResponse>(resolve => controller.createTodo(presenter.createTodo({ render: resolve })).run(input)) },
     }),
   },
-  queries: {},
+  queries: {
+    listTodo: createRoute<ListTodoRequest, ListTodoResponse>({
+      request: z.object({}),
+      exec: { handle: (input) => new Promise<ListTodoResponse>(resolve => controller.listTodo(presenter.listTodo({ render: resolve })).run(input)) },
+    }),
+  },
 });
 
 export type TodoRoutes<TodoRef> = ReturnType<typeof todoRoutes<TodoRef>>;
