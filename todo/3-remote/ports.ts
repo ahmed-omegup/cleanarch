@@ -1,4 +1,4 @@
-import { CreateTodoInput, CreateTodoOutput, ListTodoInput, ListTodoOutput } from "./interactor";
+import { CreateTodoInput, CreateTodoOutput, ListTodoInput, ListTodoOutput } from "./deps";
 
 export interface RemoteOutput<TodoRef> {
   createTodo: (todo: CreateTodoInput) => Promise<CreateTodoOutput<TodoRef>>;

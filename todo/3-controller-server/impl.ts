@@ -1,4 +1,4 @@
-import { CreateTodoInteractorOutput, ListTodoInteractorOutput, TodoInteractorFactory } from "./interactor";
+import { CreateTodoInteractorOutput, ListTodoInteractorOutput, TodoInteractorFactory } from "./deps";
 import { CreateTodoServerController, CreateTodoRequest, TodoControllerFactory, ListTodoServerController } from "./ports";
 
 export class ServerTodoController<TodoRef> implements TodoControllerFactory<TodoRef> {

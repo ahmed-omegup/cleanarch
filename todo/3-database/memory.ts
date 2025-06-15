@@ -1,5 +1,4 @@
-import { TodoRepository } from "./interactor";
-import { Todo } from "./entities";
+import { TodoRepository, Todo } from "./deps";
 
 
 

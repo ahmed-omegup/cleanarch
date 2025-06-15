@@ -1,4 +1,4 @@
-import { CreateTodoInteractorOutput, ListTodoInteractorOutput } from "./interactor";
+import { CreateTodoInteractorOutput, ListTodoInteractorOutput } from "./deps";
 import { Encoder, ListTodoPresenterOutput } from "./ports";
 import { CreateTodoPresenterOutput, TodoPresenterFactory } from "./ports";
 

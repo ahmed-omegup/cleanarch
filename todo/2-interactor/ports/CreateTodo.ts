@@ -1,4 +1,4 @@
-import { Todo } from "../entities";
+import { Todo } from "../deps";
 
 export type CreateTodoOutput<TodoRef> =
   | { success: true; todo: Todo; ref: TodoRef }

@@ -1,4 +1,4 @@
-import { Todo } from "../entities";
+import { Todo } from "../deps";
 import { CreateTodoInteractorInput, CreateTodoInput, CreateTodoInteractorOutput, TodoRepository } from "../ports";
 
 export class CreateTodoInteractorImpl<TodoRef> implements CreateTodoInteractorInput {

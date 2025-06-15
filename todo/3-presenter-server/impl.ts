@@ -1,6 +1,5 @@
-import { CreateTodoInteractorOutput, ListTodoInteractorOutput } from "./interactor";
-import { Encoder, ListTodoPresenterOutput } from "./ports";
-import { CreateTodoPresenterOutput, ServerTodoPresenterFactory } from "./ports";
+import { CreateTodoInteractorOutput, ListTodoInteractorOutput } from "./deps";
+import { Encoder, ListTodoPresenterOutput, CreateTodoPresenterOutput, ServerTodoPresenterFactory } from "./ports";
 
 export class ServerTodoPresenter<TodoRef> implements ServerTodoPresenterFactory<TodoRef> {
   constructor(
@@ -11,6 +10,7 @@ export class ServerTodoPresenter<TodoRef> implements ServerTodoPresenterFactory<
     const errors = {
       EmptyLabel: 'EmptyLabel',
       StoringError: 'UnknownError',
+      UnknownError: 'UnknownError'
     } as const
     return {
       render: (response) => view.render(response.success ?

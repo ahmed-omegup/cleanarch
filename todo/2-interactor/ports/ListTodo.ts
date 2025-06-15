@@ -1,4 +1,4 @@
-import { Todo } from "../../1-entities";
+import { Todo } from "../deps";
 
 export type ListTodoOutput<TodoRef> =
   | { success: true; list: { todo: Todo; ref: TodoRef }[] }

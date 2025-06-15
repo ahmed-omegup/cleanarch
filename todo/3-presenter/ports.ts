@@ -1,4 +1,4 @@
-import { CreateTodoInteractorOutput, ListTodoInteractorOutput } from "./interactor";
+import { CreateTodoInteractorOutput, ListTodoInteractorOutput } from "./deps";
 
 
 export type Encoder<T> = {

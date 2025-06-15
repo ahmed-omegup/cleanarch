@@ -1,4 +1,4 @@
-import { CreateTodoInteractorInput, CreateTodoInteractorOutput, ListTodoInteractorInput, ListTodoInteractorOutput, TodoInteractorFactory } from "../2-interactor";
+import { CreateTodoInteractorInput, CreateTodoInteractorOutput, ListTodoInteractorInput, ListTodoInteractorOutput, TodoInteractorFactory } from "./deps";
 import { RemoteOutput } from "./ports";
 
 export class RemoteTodoInteractorFactory<TodoRef> implements TodoInteractorFactory<TodoRef> {

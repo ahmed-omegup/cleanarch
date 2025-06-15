@@ -1,7 +1,6 @@
 import { z } from "zod";
 import { createRoute, MRoutes } from "../../../utils/route";
-import { CreateTodoRequest, ListTodoRequest, TodoControllerFactory } from "../controller";
-import { CreateTodoResponse, ListTodoResponse, ServerTodoPresenterFactory } from "../presenter";
+import { CreateTodoRequest, CreateTodoResponse, ListTodoRequest, ListTodoResponse, ServerTodoPresenterFactory, TodoControllerFactory } from "../deps";
 
 export type Mutations = {
   createTodo: { request: CreateTodoRequest; response: CreateTodoResponse };

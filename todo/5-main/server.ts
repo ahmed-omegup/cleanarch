@@ -1,15 +1,8 @@
 import { createHTTPServer } from "@trpc/server/adapters/standalone";
 import cors from 'cors';
 import { makeRouter } from "../../utils/network";
-import { TodoInteractorFactoryImpl } from "../2-interactor/impl";
-import { TodoControllerFactory } from "../3-controller";
-import { TodoController } from "../3-controller/impl";
-import { todoInMemoryRepository } from "../3-database/memory";
-import { Encoder } from "../3-presenter";
-import { ServerTodoPresenterFactory } from "../3-presenter-server";
-import { ServerTodoPresenter } from "../3-presenter-server/impl";
-import { todoRoutes } from "../4-network/shared";
 import { API } from "./config";
+import { Encoder, ServerTodoPresenter, ServerTodoPresenterFactory, ServerTodoController, TodoInteractorFactoryImpl, todoInMemoryRepository, todoRoutes } from './server.deps'
 
 export type IdRef = { id: string };
 const refEncoder: Encoder<IdRef> = {
@@ -19,13 +12,9 @@ const refEncoder: Encoder<IdRef> = {
 
 const todoRepository = todoInMemoryRepository<IdRef>(() => ({ id: Math.random().toString(36).substring(2, 15) }));
 const todoFactory = new TodoInteractorFactoryImpl(todoRepository)
-
-
 const todoPresenter: ServerTodoPresenterFactory<IdRef> = new ServerTodoPresenter<IdRef>(refEncoder);
 
-const scc: TodoControllerFactory<IdRef> = new TodoController(todoFactory)
-
-const routes = todoRoutes(scc, todoPresenter);
+const routes = todoRoutes(new ServerTodoController(todoFactory), todoPresenter);
 const router = makeRouter(routes);
 export type AppRouter = typeof router;
 const { host, port } = API;

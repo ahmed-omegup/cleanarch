@@ -1,7 +1,4 @@
-import { CreateTodoRequest, ListTodoRequest, TodoControllerFactory } from "../controller";
-import { CreateTodoResponse, Encoder, ListTodoResponse } from "../presenter";
-import { Todo } from "../../1-entities";
-import { RemoteOutput } from "../../3-remote";
+import { CreateTodoRequest, CreateTodoResponse, Encoder, ListTodoRequest, ListTodoResponse, RemoteOutput, Todo } from "./deps";
 
 type Protocol = {
   createTodo: (todo: CreateTodoRequest) => Promise<CreateTodoResponse>;
