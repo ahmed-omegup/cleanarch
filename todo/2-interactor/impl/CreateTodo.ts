@@ -1,8 +1,8 @@
 import { Todo } from "../entities";
-import { CreateTodoInteractor, CreateTodoInput, CreateTodoPresenter, TodoRepository } from "../ports";
+import { CreateTodoInteractorInput, CreateTodoInput, CreateTodoInteractorOutput, TodoRepository } from "../ports";
 
-export class CreateTodoInteractorImpl<TodoRef> implements CreateTodoInteractor {
-  constructor(private todoRepository: TodoRepository<TodoRef>, private presenter: CreateTodoPresenter<TodoRef>) { }
+export class CreateTodoInteractorImpl<TodoRef> implements CreateTodoInteractorInput {
+  constructor(private todoRepository: TodoRepository<TodoRef>, private presenter: CreateTodoInteractorOutput<TodoRef>) { }
 
   async execute(input: CreateTodoInput) {
     if (!input.label.trim()) {

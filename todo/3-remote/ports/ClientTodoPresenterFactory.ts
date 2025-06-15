@@ -1,4 +1,4 @@
-import { CreateTodoPresenter } from "../interactor";
+import { CreateTodoInteractorOutput } from "../interactor";
 
 export type CreateTodoVM =
   | { ok: true; }
@@ -9,6 +9,6 @@ export interface ClientCreateTodoView {
   render(response: CreateTodoVM): void;
 }
 export interface ClientTodoPresenterFactory<TodoRef> {
-  createTodo(view: ClientCreateTodoView): CreateTodoPresenter<TodoRef>;
+  createTodo(view: ClientCreateTodoView): CreateTodoInteractorOutput<TodoRef>;
 }
 

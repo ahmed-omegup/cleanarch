@@ -1,21 +1,16 @@
 import { Todo } from "../../1-entities";
 
-export type ListTodoOutput<TodoRef, E> =
+export type ListTodoOutput<TodoRef> =
   | { success: true; list: { todo: Todo; ref: TodoRef }[] }
-  | { success: false; error: E };
 
 export interface ListTodoInput {
-  label: string;
 }
 
-export interface ListTodoPresenter<TodoRef, E = never> {
-  render(output: ListTodoOutput<TodoRef, E>): void;
+export interface ListTodoInteractorOutput<TodoRef> {
+  render(output: ListTodoOutput<TodoRef>): void;
 }
 
-export interface ListTodoInteractor {
+export interface ListTodoInteractorInput {
   execute(input: ListTodoInput): void;
 }
 
-export type ListTodoFactory<TodoRef> = {
-  make(actors: { presenter: ListTodoPresenter<TodoRef> }): ListTodoInteractor
-}
