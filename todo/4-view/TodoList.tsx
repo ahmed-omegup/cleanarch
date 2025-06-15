@@ -16,7 +16,7 @@ export const ListTodo = (di: ListTodoDI) => {
     useEffect(() => {
       di.listTodo({
         render(response) {
-          setTimeout(() => {
+          setTimeout(() => { // Just to simulate network delay
             setTodos({ job, list: response.list });
           }, 100)
         }

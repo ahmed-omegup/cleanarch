@@ -1,7 +1,7 @@
 import { CreateTodoInteractorOutput, ListTodoInteractorOutput, TodoInteractorFactory } from "./deps";
-import { CreateTodoServerController, CreateTodoRequest, TodoControllerFactory, ListTodoServerController } from "./ports";
+import { CreateTodoServerController, CreateTodoRequest, TodoServerControllerFactory, ListTodoServerController } from "./ports";
 
-export class ServerTodoController<TodoRef> implements TodoControllerFactory<TodoRef> {
+export class ServerTodoController<TodoRef> implements TodoServerControllerFactory<TodoRef> {
   constructor(
     private readonly interactorFactory: TodoInteractorFactory<TodoRef>,
   ) { }

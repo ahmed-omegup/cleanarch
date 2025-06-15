@@ -15,7 +15,7 @@ export interface ListTodoServerController {
   run(input: ListTodoRequest): void;
 }
 
-export interface TodoControllerFactory<TodoRef> {
+export interface TodoServerControllerFactory<TodoRef> {
   createTodo(presenter: CreateTodoInteractorOutput<TodoRef>): CreateTodoServerController;
   listTodo(presenter: ListTodoInteractorOutput<TodoRef>): ListTodoServerController;
 }

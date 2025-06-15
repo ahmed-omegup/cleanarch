@@ -2,7 +2,7 @@ import { createHTTPServer } from "@trpc/server/adapters/standalone";
 import cors from 'cors';
 import { makeRouter } from "../../utils/network";
 import { API } from "./config";
-import { Encoder, ServerTodoPresenter, ServerTodoPresenterFactory, ServerTodoController, TodoInteractorFactoryImpl, todoInMemoryRepository, todoRoutes } from './server.deps'
+import { Encoder, ServerTodoController, ServerTodoPresenter, ServerTodoPresenterFactory, TodoInteractorFactoryImpl, todoInMemoryRepository, todoRoutes } from './server.deps';
 
 export type IdRef = { id: string };
 const refEncoder: Encoder<IdRef> = {
