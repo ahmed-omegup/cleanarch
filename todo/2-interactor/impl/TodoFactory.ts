@@ -1,4 +1,3 @@
-// implement the factory
 import { CreateTodoInteractorOutput, ListTodoInteractorOutput, TodoInteractorFactory } from '../ports';
 import { TodoRepository } from '../ports/TodoRepository';
 import { CreateTodoInteractorImpl } from './CreateTodo';
