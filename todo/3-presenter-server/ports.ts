@@ -1,4 +1,4 @@
-import { CreateTodoInteractorOutput, ListTodoInteractorOutput } from "./deps";
+import { CreateTodoInteractorOutput, ListTodoInteractorOutput, TodoDom } from "./deps";
 
 
 export type Encoder<T> = {
@@ -27,8 +27,8 @@ export interface ListTodoPresenterOutput {
   render(response: ListTodoResponse): void;
 }
 
-export interface ServerTodoPresenterFactory<Todo, TodoRef> {
-  createTodo(view: CreateTodoPresenterOutput): CreateTodoInteractorOutput<Todo, TodoRef>;
-  listTodo(view: ListTodoPresenterOutput): ListTodoInteractorOutput<Todo, TodoRef>;
+export interface ServerTodoPresenterFactory<TodoEntity extends TodoDom['Entity']> {
+  createTodo(view: CreateTodoPresenterOutput): CreateTodoInteractorOutput<TodoEntity>;
+  listTodo(view: ListTodoPresenterOutput): ListTodoInteractorOutput<TodoEntity>;
 }
 

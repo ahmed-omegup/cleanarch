@@ -1,18 +1,18 @@
-import { CreateTodoInteractorOutput, ListTodoInteractorOutput, TodoInteractorFactory } from "./deps";
+import { CreateTodoInteractorOutput, ListTodoInteractorOutput, TodoDom, TodoInteractorFactory } from "./deps";
 import { CreateTodoServerController, CreateTodoRequest, TodoServerControllerFactory, ListTodoServerController } from "./ports";
 
-export class ServerTodoController<Todo, TodoRef> implements TodoServerControllerFactory<Todo, TodoRef> {
+export class ServerTodoController<TodoEntity extends TodoDom['Entity']> implements TodoServerControllerFactory<TodoEntity> {
   constructor(
-    private readonly interactorFactory: TodoInteractorFactory<Todo, TodoRef>,
+    private readonly interactorFactory: TodoInteractorFactory<TodoEntity>,
   ) { }
 
-  createTodo(presenter: CreateTodoInteractorOutput<Todo, TodoRef>): CreateTodoServerController {
+  createTodo(presenter: CreateTodoInteractorOutput<TodoEntity>): CreateTodoServerController {
     const createTodo = this.interactorFactory.createTodo({ presenter })
     return {
       run: (input: CreateTodoRequest) => createTodo.execute({ label: input.label, })
     }
   }
-  listTodo(presenter: ListTodoInteractorOutput<Todo, TodoRef>): ListTodoServerController {
+  listTodo(presenter: ListTodoInteractorOutput<TodoEntity>): ListTodoServerController {
     const listTodo = this.interactorFactory.listTodo({ presenter })
     return {
       run: (input) => listTodo.execute(input)

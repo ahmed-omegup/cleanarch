@@ -1,5 +1,7 @@
-export interface TodoRepository<Todo, TodoRef> {
-  save(todo: Todo): Promise<TodoRef>;
-  get(ref: TodoRef): Promise<Todo | null>;
-  list(): Promise<{ todo: Todo; ref: TodoRef }[]>;
+import { TodoDom } from "../deps";
+
+export interface TodoRepository<Todo extends TodoDom> {
+  save(todo: Todo['Model']): Promise<Todo['Entity']>;
+  get(ref: Todo['Ref']): Promise<Todo['Entity'] | null>;
+  list(): Promise<Todo['Entity'][]>;
 }

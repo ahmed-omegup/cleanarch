@@ -1,8 +1,5 @@
 import { useMemo, useState } from "react";
-import {
-  CreateTodoRequest,
-} from "./controller";
-import { CreateTodoPresenterOutput, CreateTodoResponse } from "./presenter";
+import {  CreateTodoRequest, CreateTodoPresenterOutput } from "./deps";
 
 
 export type AddTodoDI = {
@@ -17,12 +14,12 @@ export const AddTodo = (di: AddTodoDI) => {
     const createTodo = useMemo(() => {
       return di.createTodo({
         render: (response) => {
-          if(response.success) {
+          if (response.success) {
             setOutput(undefined)
             props.close();
           } else {
-            setOutput({ message: response.output });            
-          }            
+            setOutput({ message: response.output });
+          }
         }
       });
     }, []);

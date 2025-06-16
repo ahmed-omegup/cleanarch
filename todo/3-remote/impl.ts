@@ -1,9 +1,9 @@
-import { CreateTodoInteractorInput, CreateTodoInteractorOutput, ListTodoInteractorInput, ListTodoInteractorOutput, TodoInteractorFactory } from "./deps";
+import { CreateTodoInteractorInput, CreateTodoInteractorOutput, ListTodoInteractorInput, ListTodoInteractorOutput, TodoDom, TodoInteractorFactory } from "./deps";
 import { RemoteOutput } from "./ports";
 
-export class RemoteTodoInteractorFactory<Todo, TodoRef> implements TodoInteractorFactory<Todo, TodoRef> {
-  constructor(private gateway: RemoteOutput<Todo, TodoRef>) { }
-  createTodo(actors: { presenter: CreateTodoInteractorOutput<Todo, TodoRef>; }): CreateTodoInteractorInput {
+export class RemoteTodoInteractorFactory<TodoEntity extends TodoDom['Entity']> implements TodoInteractorFactory<TodoEntity> {
+  constructor(private gateway: RemoteOutput<TodoEntity>) { }
+  createTodo(actors: { presenter: CreateTodoInteractorOutput<TodoEntity>; }): CreateTodoInteractorInput {
     return {
       execute: async (todo) => {
         const response = await this.gateway.createTodo(todo);
@@ -11,7 +11,7 @@ export class RemoteTodoInteractorFactory<Todo, TodoRef> implements TodoInteracto
       }
     }
   }
-  listTodo(actors: { presenter: ListTodoInteractorOutput<Todo, TodoRef>; }): ListTodoInteractorInput {
+  listTodo(actors: { presenter: ListTodoInteractorOutput<TodoEntity>; }): ListTodoInteractorInput {
     return {
       execute: async (query) => {
         const response = await this.gateway.listTodo(query);

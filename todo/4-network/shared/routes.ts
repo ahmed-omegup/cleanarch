@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { createRoute, MRoutes } from "../../../utils/route";
-import { CreateTodoRequest, CreateTodoResponse, ListTodoRequest, ListTodoResponse, ServerTodoPresenterFactory, TodoServerControllerFactory } from "../deps";
+import { CreateTodoRequest, CreateTodoResponse, ListTodoRequest, ListTodoResponse, ServerTodoPresenterFactory, TodoDom, TodoServerControllerFactory } from "../deps";
 
 export type Mutations = {
   createTodo: { request: CreateTodoRequest; response: CreateTodoResponse };
@@ -12,7 +12,7 @@ export type Queries = {
 
 type Routes = MRoutes<Mutations, Queries>
 
-export const todoRoutes = <Todo, TodoRef>(controller: TodoServerControllerFactory<Todo, TodoRef>, presenter: ServerTodoPresenterFactory<Todo, TodoRef>): Routes => ({
+export const todoRoutes = <TodoEntity  extends TodoDom['Entity']>(controller: TodoServerControllerFactory<TodoEntity>, presenter: ServerTodoPresenterFactory<TodoEntity>): Routes => ({
   mutations: {
     createTodo: createRoute<CreateTodoRequest, CreateTodoResponse>({
       request: z.object({ label: z.string() }),
@@ -27,4 +27,4 @@ export const todoRoutes = <Todo, TodoRef>(controller: TodoServerControllerFactor
   },
 });
 
-export type TodoRoutes<Todo, TodoRef> = ReturnType<typeof todoRoutes<Todo, TodoRef>>;
+export type TodoRoutes<TodoEntity extends TodoDom['Entity']> = ReturnType<typeof todoRoutes<TodoEntity>>;

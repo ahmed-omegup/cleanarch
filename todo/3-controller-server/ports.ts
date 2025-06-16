@@ -1,4 +1,4 @@
-import { CreateTodoInteractorOutput, ListTodoInteractorOutput } from "./deps";
+import { CreateTodoInteractorOutput, ListTodoInteractorOutput, TodoDom } from "./deps";
 
 export type CreateTodoRequest = {
   label: string;
@@ -15,7 +15,7 @@ export interface ListTodoServerController {
   run(input: ListTodoRequest): void;
 }
 
-export interface TodoServerControllerFactory<Todo, TodoRef> {
-  createTodo(presenter: CreateTodoInteractorOutput<Todo, TodoRef>): CreateTodoServerController;
-  listTodo(presenter: ListTodoInteractorOutput<Todo, TodoRef>): ListTodoServerController;
+export interface TodoServerControllerFactory<TodoEntity extends TodoDom['Entity']> {
+  createTodo(presenter: CreateTodoInteractorOutput<TodoEntity>): CreateTodoServerController;
+  listTodo(presenter: ListTodoInteractorOutput<TodoEntity>): ListTodoServerController;
 }

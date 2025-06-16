@@ -1,6 +1,5 @@
 import { useEffect, useReducer, useState } from "react";
-import { ListTodoRequest } from "./controller";
-import { ListTodoPresenterOutput, TodoDTO } from "./presenter";
+import { ListTodoRequest, ListTodoPresenterOutput, TodoDTO } from "./deps";
 
 
 export type ListTodoDI = {

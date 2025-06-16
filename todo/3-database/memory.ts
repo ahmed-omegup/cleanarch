@@ -1,20 +1,21 @@
-import { TodoRepository } from "./deps";
+import { TodoDom, TodoOps, TodoRepository } from "./deps";
 
 
 
-export const todoInMemoryRepository = <Todo, TodoRef>(generator: () => TodoRef): TodoRepository<Todo, TodoRef> => {
-  const todos = new Map<TodoRef, Todo>();
+export const todoInMemoryRepository = <Todo extends TodoDom>(ops:TodoOps<Todo>, generator: () => Todo['Ref']): TodoRepository<Todo> => {
+  const todos = new Map<Todo['Ref'], Todo['Entity']>();
   return {
     save: async todo => {
       const id = generator();
-      todos.set(id, todo);
-      return id;
+      const entity = ops.entity(todo, id);
+      todos.set(id, entity);
+      return entity;
     },
     get: async (ref) => {
       return todos.get(ref) ?? null;
     },
     list: async () => {
-      return Array.from(todos.entries()).map(([ref, todo]) => ({ todo, ref }));
+      return Array.from(todos.values());
     }
   };
 }
