@@ -19,6 +19,7 @@ export type CreateTodoResponse =
 
 export type ListTodoResponse =
   | { success: true; list: TodoDTO[]; }
+  | { success: false; error: string };
 
 export interface CreateTodoPresenterOutput {
   render(response: CreateTodoResponse): void;
@@ -28,8 +29,8 @@ export interface ListTodoPresenterOutput {
   render(response: ListTodoResponse): void;
 }
 
-export interface TodoPresenterFactory<TodoEntity extends TodoDom['Entity']> {
-  createTodo(view: CreateTodoPresenterOutput): CreateTodoInteractorOutput<TodoEntity>;
-  listTodo(view: ListTodoPresenterOutput): ListTodoInteractorOutput<TodoEntity>;
+export interface TodoPresenterFactory<TodoEntity extends TodoDom['Entity'], Error> {
+  createTodo(view: CreateTodoPresenterOutput): CreateTodoInteractorOutput<TodoEntity, Error>;
+  listTodo(view: ListTodoPresenterOutput): ListTodoInteractorOutput<TodoEntity, Error>;
 }
 

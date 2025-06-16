@@ -1,13 +1,12 @@
 import { createTRPCClient, httpBatchLink } from "@trpc/client";
 import { createRoot } from "react-dom/client";
-import { API } from "./config";
-import { AppRouter } from "./server";
-import { Encoder, RemoteTodoInteractorFactory, TodoAppHoc, TodoController, TodoPresenter, todoClient, TodoOps, TodoDom, TodoDTO } from './client.deps'
+import { API, ServerError } from "./config";
+import { Encoder, RemoteTodoInteractorFactory, TodoAppHoc, TodoController, TodoPresenter, todoClient, TodoOps, TodoDom, TodoDTO, AppRouter } from './client.deps'
 
 const { host, port } = API;
 const HOST = `http://${host}:${port}`;
 
-const client = createTRPCClient<AppRouter>({ links: [httpBatchLink({ url: HOST, })] });
+const client = createTRPCClient<AppRouter<ServerError>>({ links: [httpBatchLink({ url: HOST, })] });
 
 type Todo = TodoDom & {
   Ref: string;
@@ -34,12 +33,15 @@ const refEncoder: Encoder<string> = {
   decode: id,
   encode: id,
 };
-const remoteInteractorFactory = new RemoteTodoInteractorFactory(todoClient({
+const remoteInteractorFactory = new RemoteTodoInteractorFactory<Todo['Entity'], 'NetworkError' | ServerError>(todoClient({
   createTodo: (todo) => client.createTodo.mutate(todo),
   listTodo: (query) => client.listTodo.query(query),
 }))
 
-const presenterFactory = new TodoPresenter<Todo>(refEncoder, ops)
+const presenterFactory = new TodoPresenter<Todo, 'NetworkError' | ServerError>(refEncoder, ops, (e) => ({ 
+  UnknownError: 'Unknown Error', 
+  NetworkError: 'Verify your network connection'
+}[e]));
 const controller = new TodoController(remoteInteractorFactory)
 
 const TodoApp = TodoAppHoc({

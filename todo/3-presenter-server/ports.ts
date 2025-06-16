@@ -12,23 +12,24 @@ export type TodoDTO = {
   completed: boolean;
 };
 
-export type CreateTodoResponse =
+export type CreateTodoResponse<Error> =
   | { success: true; ref: string; }
-  | { success: false; error: 'EmptyLabel' | 'UnknownError' };
+  | { success: false; error: 'EmptyLabel' | Error };
 
-export type ListTodoResponse =
+export type ListTodoResponse<Error> =
   | { success: true; list: TodoDTO[]; }
+  | { success: false; error: Error };
 
-export interface CreateTodoPresenterOutput {
-  render(response: CreateTodoResponse): void;
+export interface CreateTodoPresenterOutput<Error> {
+  render(response: CreateTodoResponse<Error>): void;
 }
 
-export interface ListTodoPresenterOutput {
-  render(response: ListTodoResponse): void;
+export interface ListTodoPresenterOutput<Error> {
+  render(response: ListTodoResponse<Error>): void;
 }
 
-export interface ServerTodoPresenterFactory<TodoEntity extends TodoDom['Entity']> {
-  createTodo(view: CreateTodoPresenterOutput): CreateTodoInteractorOutput<TodoEntity>;
-  listTodo(view: ListTodoPresenterOutput): ListTodoInteractorOutput<TodoEntity>;
+export interface ServerTodoPresenterFactory<TodoEntity extends TodoDom['Entity'], ServerError, InnerError> {
+  createTodo(view: CreateTodoPresenterOutput<ServerError>): CreateTodoInteractorOutput<TodoEntity, InnerError>;
+  listTodo(view: ListTodoPresenterOutput<ServerError>): ListTodoInteractorOutput<TodoEntity, InnerError>;
 }
 

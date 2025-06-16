@@ -1,9 +1,8 @@
 import { createHTTPServer } from "@trpc/server/adapters/standalone";
 import cors from 'cors';
 import { makeRouter } from "../../utils/network";
-import { API } from "./config";
-import { Encoder, ServerTodoController, ServerTodoPresenter, ServerTodoPresenterFactory, TodoInteractorFactoryImpl, todoInMemoryRepository, todoRoutes } from './server.deps';
-import { TodoDom, TodoOps } from "../1-entities";
+import { API, ServerError } from "./config";
+import {  Encoder, ServerTodoController, ServerTodoPresenter, TodoInteractorFactoryImpl, todoInMemoryRepository, todoRoutes, TodoDom, TodoOps, AppRouter } from './server.deps';
 
 
 const id = <T,>(x: T) => x;
@@ -32,13 +31,13 @@ const ops: TodoOps<Todo> = {
   ref: ([ref]) => ref,
 }
 
-const todoRepository = todoInMemoryRepository<Todo>(ops, () =>  Math.random().toString(36).substring(2, 15) );
+const todoRepository = todoInMemoryRepository<Todo>(ops, () => Math.random().toString(36).substring(2, 15));
 const todoFactory = new TodoInteractorFactoryImpl(todoRepository, ops)
-const todoPresenter: ServerTodoPresenterFactory<Todo['Entity']> = new ServerTodoPresenter<Todo>(refEncoder, ops);
+const todoPresenter = new ServerTodoPresenter<Todo, 'UnknownError', 'StoringError'>(refEncoder, ops, () => 'UnknownError');
 
 const routes = todoRoutes(new ServerTodoController(todoFactory), todoPresenter);
-const router = makeRouter(routes);
-export type AppRouter = typeof router;
+const router: AppRouter<ServerError> = makeRouter(routes);
+
 const { host, port } = API;
 const HOST = `http://${host}:${port}`;
 createHTTPServer({ middleware: cors(), router }).listen({ host, port }, () => {

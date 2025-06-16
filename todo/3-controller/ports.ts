@@ -13,8 +13,8 @@ export interface ListTodoControllerInput {
   run(input: ListTodoRequest): void;
 }
 
-export interface TodoControllerFactory<TodoEntity extends TodoDom['Entity']> {
-  createTodo(presenter: CreateTodoInteractorOutput<TodoEntity>): CreateTodoControllerInput;
-  listTodo(presenter: ListTodoInteractorOutput<TodoEntity>): ListTodoControllerInput;
+export interface TodoControllerFactory<TodoEntity extends TodoDom['Entity'], Error> {
+  createTodo(presenter: CreateTodoInteractorOutput<TodoEntity, Error>): CreateTodoControllerInput;
+  listTodo(presenter: ListTodoInteractorOutput<TodoEntity, Error>): ListTodoControllerInput;
 }
 

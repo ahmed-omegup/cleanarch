@@ -2,29 +2,29 @@ import { z } from "zod";
 import { createRoute, MRoutes } from "../../../utils/route";
 import { CreateTodoRequest, CreateTodoResponse, ListTodoRequest, ListTodoResponse, ServerTodoPresenterFactory, TodoDom, TodoServerControllerFactory } from "../deps";
 
-export type Mutations = {
-  createTodo: { request: CreateTodoRequest; response: CreateTodoResponse };
+export type Mutations<Error> = {
+  createTodo: { request: CreateTodoRequest; response: CreateTodoResponse<Error> };
 };
-export type Queries = {
-  listTodo: { request: ListTodoRequest; response: ListTodoResponse };
+export type Queries<Error> = {
+  listTodo: { request: ListTodoRequest; response: ListTodoResponse<Error> };
 };
 
 
-type Routes = MRoutes<Mutations, Queries>
+type Routes<Error> = MRoutes<Mutations<Error>, Queries<Error>>
 
-export const todoRoutes = <TodoEntity  extends TodoDom['Entity']>(controller: TodoServerControllerFactory<TodoEntity>, presenter: ServerTodoPresenterFactory<TodoEntity>): Routes => ({
+export const todoRoutes = <TodoEntity  extends TodoDom['Entity'], InnerError, ServerError>(controller: TodoServerControllerFactory<TodoEntity, InnerError>, presenter: ServerTodoPresenterFactory<TodoEntity, ServerError, InnerError>): Routes<ServerError> => ({
   mutations: {
-    createTodo: createRoute<CreateTodoRequest, CreateTodoResponse>({
+    createTodo: createRoute<CreateTodoRequest, CreateTodoResponse<ServerError>>({
       request: z.object({ label: z.string() }),
-      exec: { handle: (input) => new Promise<CreateTodoResponse>(resolve => controller.createTodo(presenter.createTodo({ render: resolve })).run(input)) },
+      exec: { handle: (input) => new Promise(resolve => controller.createTodo(presenter.createTodo({ render: resolve })).run(input)) },
     }),
   },
   queries: {
-    listTodo: createRoute<ListTodoRequest, ListTodoResponse>({
+    listTodo: createRoute<ListTodoRequest, ListTodoResponse<ServerError>>({
       request: z.object({}),
-      exec: { handle: (input) => new Promise<ListTodoResponse>(resolve => controller.listTodo(presenter.listTodo({ render: resolve })).run(input)) },
+      exec: { handle: (input) => new Promise(resolve => controller.listTodo(presenter.listTodo({ render: resolve })).run(input)) },
     }),
   },
 });
 
-export type TodoRoutes<TodoEntity extends TodoDom['Entity']> = ReturnType<typeof todoRoutes<TodoEntity>>;
+export type TodoRoutes<TodoEntity extends TodoDom['Entity'], InnerError, ServerError> = ReturnType<typeof todoRoutes<TodoEntity, InnerError, ServerError>>;

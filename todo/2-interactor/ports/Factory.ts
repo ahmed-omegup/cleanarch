@@ -3,8 +3,8 @@ import { CreateTodoInteractorInput, CreateTodoInteractorOutput } from "./CreateT
 import { ListTodoInteractorInput, ListTodoInteractorOutput } from "./ListTodo";
 
 
-export interface TodoInteractorFactory<TodoEntity extends TodoDom['Entity']> {
-    createTodo(actors: { presenter: CreateTodoInteractorOutput<TodoEntity> }): CreateTodoInteractorInput
-    listTodo(actors: { presenter: ListTodoInteractorOutput<TodoEntity> }): ListTodoInteractorInput
+export interface TodoInteractorFactory<TodoEntity extends TodoDom['Entity'], Error> {
+    createTodo(actors: { presenter: CreateTodoInteractorOutput<TodoEntity, Error> }): CreateTodoInteractorInput
+    listTodo(actors: { presenter: ListTodoInteractorOutput<TodoEntity, Error> }): ListTodoInteractorInput
 }
 

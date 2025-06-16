@@ -1,17 +1,26 @@
 import { CreateTodoRequest, CreateTodoResponse, ListTodoRequest, ListTodoResponse, RemoteOutput, TodoDom, TodoDTO } from "./deps";
 
-type Protocol = {
-  createTodo: (todo: CreateTodoRequest) => Promise<CreateTodoResponse>;
-  listTodo: (query: ListTodoRequest) => Promise<ListTodoResponse>;
+type Protocol<Error> = {
+  createTodo: (todo: CreateTodoRequest) => Promise<CreateTodoResponse<Error>>;
+  listTodo: (query: ListTodoRequest) => Promise<ListTodoResponse<Error>>;
 }
 
-export const todoClient = (medium: Protocol): RemoteOutput<TodoDTO & TodoDom['Entity']> => ({
+export const todoClient = <Error>(medium: Protocol<Error>): RemoteOutput<TodoDTO & TodoDom['Entity'], Error | 'NetworkError'> => ({
   async createTodo(todo) {
-    const result = await medium.createTodo({ label: todo.label })
-    return result.success ? { success: true, todo: { id: result.ref, ...todo, completed: false } } : { success: false, error: result.error }
+    try {
+      if(Math.random() < 0.5) throw new Error('NetworkError'); // Simulate network error
+      const result = await medium.createTodo({ label: todo.label })
+      return result.success ? { success: true, todo: { id: result.ref, ...todo, completed: false } } : { success: false, error: result.error }
+    } catch {
+      return { success: false, error: 'NetworkError' }
+    }
   },
   async listTodo(query) {
-    const result = await medium.listTodo(query)
-    return { success: true, list: result.list }
+    try {
+      if(Math.random() < 0.5) throw new Error('NetworkError'); // Simulate network error
+      return medium.listTodo(query)
+    } catch {
+      return { success: false, error: 'NetworkError' }
+    }
   }
 });

@@ -30,8 +30,8 @@ export const AddTodo = (di: AddTodoDI) => {
     };
     return (
       <form onSubmit={onSubmit}>
-        <input name="title" />
-        {output && <span>{output.message}</span>}
+        <div><input autoFocus name="title" /></div>
+        {output && <div>{output.message}</div>}
         <button>Add</button>
       </form>
     );
