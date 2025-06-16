@@ -13,8 +13,8 @@ export interface ListTodoControllerInput {
   run(input: ListTodoRequest): void;
 }
 
-export interface TodoControllerFactory<TodoRef> {
-  createTodo(presenter: CreateTodoInteractorOutput<TodoRef>): CreateTodoControllerInput;
-  listTodo(presenter: ListTodoInteractorOutput<TodoRef>): ListTodoControllerInput;
+export interface TodoControllerFactory<Todo, TodoRef> {
+  createTodo(presenter: CreateTodoInteractorOutput<Todo, TodoRef>): CreateTodoControllerInput;
+  listTodo(presenter: ListTodoInteractorOutput<Todo, TodoRef>): ListTodoControllerInput;
 }
 

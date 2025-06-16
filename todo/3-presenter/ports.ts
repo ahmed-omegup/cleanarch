@@ -7,7 +7,7 @@ export type Encoder<T> = {
 }
 
 export type TodoDTO = {
-  id: string
+  key: string
   label: string;
   completed: boolean;
 };
@@ -27,8 +27,8 @@ export interface ListTodoPresenterOutput {
   render(response: ListTodoResponse): void;
 }
 
-export interface TodoPresenterFactory<TodoRef> {
-  createTodo(view: CreateTodoPresenterOutput): CreateTodoInteractorOutput<TodoRef>;
-  listTodo(view: ListTodoPresenterOutput): ListTodoInteractorOutput<TodoRef>;
+export interface TodoPresenterFactory<Todo, TodoRef> {
+  createTodo(view: CreateTodoPresenterOutput): CreateTodoInteractorOutput<Todo, TodoRef>;
+  listTodo(view: ListTodoPresenterOutput): ListTodoInteractorOutput<Todo, TodoRef>;
 }
 

@@ -1,10 +1,6 @@
-export class Todo {
-  constructor(
-    public title: string,
-    public completed: boolean
-  ) {}
-
-  toggle(): void {
-    this.completed = !this.completed;
-  }
+export type TodoOps<Todo> = {
+  create(title: string, completed: boolean): Todo;
+  toggle(t: Todo): Todo;
+  isCompleted(t: Todo): boolean;
+  getTitle: (t: Todo) => string;
 }

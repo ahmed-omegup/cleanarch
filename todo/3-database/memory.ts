@@ -1,8 +1,8 @@
-import { TodoRepository, Todo } from "./deps";
+import { TodoRepository } from "./deps";
 
 
 
-export const todoInMemoryRepository = <TodoRef>(generator: () => TodoRef): TodoRepository<TodoRef> => {
+export const todoInMemoryRepository = <Todo, TodoRef>(generator: () => TodoRef): TodoRepository<Todo, TodoRef> => {
   const todos = new Map<TodoRef, Todo>();
   return {
     save: async todo => {

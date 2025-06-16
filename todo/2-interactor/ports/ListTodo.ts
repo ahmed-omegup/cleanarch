@@ -1,13 +1,12 @@
-import { Todo } from "../deps";
 
-export type ListTodoOutput<TodoRef> =
+export type ListTodoOutput<Todo, TodoRef> =
   | { success: true; list: { todo: Todo; ref: TodoRef }[] }
 
 export interface ListTodoInput {
 }
 
-export interface ListTodoInteractorOutput<TodoRef> {
-  render(output: ListTodoOutput<TodoRef>): void;
+export interface ListTodoInteractorOutput<Todo, TodoRef> {
+  render(output: ListTodoOutput<Todo, TodoRef>): void;
 }
 
 export interface ListTodoInteractorInput {

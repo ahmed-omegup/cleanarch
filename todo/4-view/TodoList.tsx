@@ -25,7 +25,7 @@ export const ListTodo = (di: ListTodoDI) => {
     return (
       <ul>
         {todos?.job !== job ? <li>Loading...</li> : todos.list.length === 0 ? <li>No todos found</li> : todos.list.map((todo) => (
-          <li key={todo.id}>
+          <li key={todo.key}>
             <label>
               <input type='checkbox' checked={todo.completed} readOnly />
               <span>{todo.label}</span>

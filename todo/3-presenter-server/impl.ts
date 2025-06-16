@@ -1,12 +1,14 @@
+import { TodoOps } from "../1-entities";
 import { CreateTodoInteractorOutput, ListTodoInteractorOutput } from "./deps";
 import { Encoder, ListTodoPresenterOutput, CreateTodoPresenterOutput, ServerTodoPresenterFactory } from "./ports";
 
-export class ServerTodoPresenter<TodoRef> implements ServerTodoPresenterFactory<TodoRef> {
+export class ServerTodoPresenter<Todo, TodoRef> implements ServerTodoPresenterFactory<Todo, TodoRef> {
   constructor(
     private readonly refEncoder: Encoder<TodoRef>,
+    private readonly ops: TodoOps<Todo>,
   ) { }
 
-  createTodo(view: CreateTodoPresenterOutput): CreateTodoInteractorOutput<TodoRef> {
+  createTodo(view: CreateTodoPresenterOutput): CreateTodoInteractorOutput<Todo, TodoRef> {
     const errors = {
       EmptyLabel: 'EmptyLabel',
       StoringError: 'UnknownError',
@@ -17,14 +19,14 @@ export class ServerTodoPresenter<TodoRef> implements ServerTodoPresenterFactory<
         { success: true, ref: this.refEncoder.encode(response.ref) } : { success: false, error: errors[response.error] }),
     }
   }
-  listTodo(view: ListTodoPresenterOutput): ListTodoInteractorOutput<TodoRef> {
+  listTodo(view: ListTodoPresenterOutput): ListTodoInteractorOutput<Todo, TodoRef> {
     return {
       render: (response) => view.render(
         {
           success: true, list: response.list.map(({ todo, ref }) => ({
             id: this.refEncoder.encode(ref),
-            label: todo.title,
-            completed: todo.completed,
+            label: this.ops.getTitle(todo),
+            completed: this.ops.isCompleted(todo),
           }))
         }),
     }

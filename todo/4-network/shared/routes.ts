@@ -12,7 +12,7 @@ export type Queries = {
 
 type Routes = MRoutes<Mutations, Queries>
 
-export const todoRoutes = <TodoRef>(controller: TodoServerControllerFactory<TodoRef>, presenter: ServerTodoPresenterFactory<TodoRef>): Routes => ({
+export const todoRoutes = <Todo, TodoRef>(controller: TodoServerControllerFactory<Todo, TodoRef>, presenter: ServerTodoPresenterFactory<Todo, TodoRef>): Routes => ({
   mutations: {
     createTodo: createRoute<CreateTodoRequest, CreateTodoResponse>({
       request: z.object({ label: z.string() }),
@@ -27,4 +27,4 @@ export const todoRoutes = <TodoRef>(controller: TodoServerControllerFactory<Todo
   },
 });
 
-export type TodoRoutes<TodoRef> = ReturnType<typeof todoRoutes<TodoRef>>;
+export type TodoRoutes<Todo, TodoRef> = ReturnType<typeof todoRoutes<Todo, TodoRef>>;

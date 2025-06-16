@@ -1,14 +1,14 @@
-import { Todo } from "../deps";
+import { TodoOps } from "../deps";
 import { CreateTodoInteractorInput, CreateTodoInput, CreateTodoInteractorOutput, TodoRepository } from "../ports";
 
-export class CreateTodoInteractorImpl<TodoRef> implements CreateTodoInteractorInput {
-  constructor(private todoRepository: TodoRepository<TodoRef>, private presenter: CreateTodoInteractorOutput<TodoRef>) { }
+export class CreateTodoInteractorImpl<Todo, TodoRef> implements CreateTodoInteractorInput {
+  constructor(private todoRepository: TodoRepository<Todo, TodoRef>, private presenter: CreateTodoInteractorOutput<Todo, TodoRef>, private ops: TodoOps<Todo>) { }
 
   async execute(input: CreateTodoInput) {
     if (!input.label.trim()) {
       this.presenter.render({ success: false, error: 'EmptyLabel' });
     } else {
-      const todo = new Todo(input.label, false);
+      const todo = this.ops.create(input.label, false);
       try {
         const ref = await this.todoRepository.save(todo);
         this.presenter.render({ success: true, todo, ref });
