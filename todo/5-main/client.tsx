@@ -34,13 +34,13 @@ const refEncoder: Encoder<string> = {
   decode: id,
   encode: id,
 };
-const proxy = new RemoteTodoInteractorFactory(todoClient({
+const remoteInteractorFactory = new RemoteTodoInteractorFactory(todoClient({
   createTodo: (todo) => client.createTodo.mutate(todo),
   listTodo: (query) => client.listTodo.query(query),
 }))
 
 const presenterFactory = new TodoPresenter<Todo>(refEncoder, ops)
-const controller = new TodoController(proxy)
+const controller = new TodoController(remoteInteractorFactory)
 
 const TodoApp = TodoAppHoc({
   createTodo: (view) => controller.createTodo(presenterFactory.createTodo(view)),
