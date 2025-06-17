@@ -1,6 +1,6 @@
 import { TodoDom, TodoOps } from "../1-entities";
-import { CreateTodoInteractorOutput, ListTodoInteractorOutput } from "./deps";
-import { Encoder, ListTodoPresenterOutput } from "./ports";
+import { CreateTodoInteractorOutput, ListTodoInteractorOutput, ToggleTodoInteractorOutput } from "./deps";
+import { Encoder, ListTodoPresenterOutput, ToggleTodoPresenterOutput } from "./ports";
 import { CreateTodoPresenterOutput, TodoPresenterFactory } from "./ports";
 
 export class TodoPresenter<Todo extends TodoDom, Error> implements TodoPresenterFactory<Todo['Entity'], Error> {
@@ -27,6 +27,15 @@ export class TodoPresenter<Todo extends TodoDom, Error> implements TodoPresenter
             completed: this.ops.isCompleted(this.ops.model(todo)),
           }))
         }:
+        { success: false, error: this.errorHandler(response.error) }),
+    }
+  }
+
+  toggleTodo(view: ToggleTodoPresenterOutput): ToggleTodoInteractorOutput<Error> {
+    return {
+      render: (response) => view.render(
+        response.success ?
+        { success: true, completed: response.completed } :
         { success: false, error: this.errorHandler(response.error) }),
     }
   }

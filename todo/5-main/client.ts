@@ -1,5 +1,4 @@
 import { createTRPCClient, httpBatchLink } from "@trpc/client";
-import { createRoot } from "react-dom/client";
 import { API, ServerError } from "./config";
 import { Encoder, RemoteTodoInteractorFactory, TodoAppHoc, TodoController, TodoPresenter, todoClient, TodoOps, TodoDom, TodoDTO, AppRouter } from './client.deps'
 
@@ -21,9 +20,6 @@ type Todo = TodoDom & {
 const ops: TodoOps<Todo> = {
   getTitle: (todo) => todo.label,
   isCompleted: (todo) => todo.completed,
-  toggle: (todo) => ({ ...todo, completed: !todo.completed }),
-  create: (label, completed) => ({ label, completed }),
-  entity: ({ _brand, ...todo }, ref) => ({ id: ref, ...todo }),
   model: ({ _brand, ...todo }) => todo,
   ref: (todo) => todo.id,
 }
@@ -33,20 +29,21 @@ const refEncoder: Encoder<string> = {
   decode: id,
   encode: id,
 };
-const remoteInteractorFactory = new RemoteTodoInteractorFactory<Todo['Entity'], 'NetworkError' | ServerError>(todoClient({
+const remoteInteractorFactory = new RemoteTodoInteractorFactory<Todo['Entity'], Todo['Ref'], 'NetworkError' | ServerError>(todoClient({
   createTodo: (todo) => client.createTodo.mutate(todo),
   listTodo: (query) => client.listTodo.query(query),
+  toggleTodo: (query) => client.toggleTodo.mutate(query),
 }))
 
-const presenterFactory = new TodoPresenter<Todo, 'NetworkError' | ServerError>(refEncoder, ops, (e) => ({ 
-  UnknownError: 'Unknown Error', 
+const presenterFactory = new TodoPresenter<Todo, 'NetworkError' | ServerError>(refEncoder, ops, (e) => ({
+  UnknownError: 'Unknown Error',
   NetworkError: 'Verify your network connection'
 }[e]));
-const controller = new TodoController(remoteInteractorFactory)
+const controller = new TodoController<Todo['Entity'], Todo['Ref'], 'NetworkError' | ServerError>(remoteInteractorFactory, x => x)
 
-const TodoApp = TodoAppHoc({
+export const TodoApp = TodoAppHoc({
   createTodo: (view) => controller.createTodo(presenterFactory.createTodo(view)),
   listTodo: (view) => controller.listTodo(presenterFactory.listTodo(view)),
+  toggleTodo: (view) => controller.toggleTodo(presenterFactory.toggleTodo(view)),
 });
 
-createRoot(document.getElementById("app-root")!).render(<TodoApp />);

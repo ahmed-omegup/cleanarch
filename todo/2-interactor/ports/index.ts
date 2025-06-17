@@ -1,4 +1,5 @@
 export * from './CreateTodo'
 export * from './Factory'
 export * from './ListTodo'
+export * from './ToggleTodo'
 export * from './TodoRepository'

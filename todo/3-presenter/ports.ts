@@ -1,5 +1,5 @@
 import { TodoDom } from "../1-entities";
-import { CreateTodoInteractorOutput, ListTodoInteractorOutput } from "./deps";
+import { CreateTodoInteractorOutput, ListTodoInteractorOutput, ToggleTodoInteractorOutput } from "./deps";
 
 
 export type Encoder<T> = {
@@ -21,6 +21,10 @@ export type ListTodoResponse =
   | { success: true; list: TodoDTO[]; }
   | { success: false; error: string };
 
+export type ToggleTodoResponse =
+  | { success: true; completed: boolean; }
+  | { success: false; error: string };
+
 export interface CreateTodoPresenterOutput {
   render(response: CreateTodoResponse): void;
 }
@@ -29,8 +33,13 @@ export interface ListTodoPresenterOutput {
   render(response: ListTodoResponse): void;
 }
 
+export interface ToggleTodoPresenterOutput {
+  render(response: ToggleTodoResponse): void;
+}
+
 export interface TodoPresenterFactory<TodoEntity extends TodoDom['Entity'], Error> {
   createTodo(view: CreateTodoPresenterOutput): CreateTodoInteractorOutput<TodoEntity, Error>;
   listTodo(view: ListTodoPresenterOutput): ListTodoInteractorOutput<TodoEntity, Error>;
+  toggleTodo(view: ToggleTodoPresenterOutput): ToggleTodoInteractorOutput<Error>;
 }
 

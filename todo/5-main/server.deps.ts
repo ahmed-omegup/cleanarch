@@ -1,4 +1,4 @@
-export type { TodoDom, TodoOps } from "../1-entities";
+export { type Todo, ops } from "../1-entities/impl";
 export { TodoInteractorFactoryImpl } from "../2-interactor/impl";
 export { ServerTodoController } from "../3-controller-server/impl";
 export { todoInMemoryRepository } from "../3-database/memory";

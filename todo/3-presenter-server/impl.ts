@@ -1,5 +1,5 @@
-import { CreateTodoInteractorOutput, ListTodoInteractorOutput, TodoDom, TodoOps } from "./deps";
-import { Encoder, ListTodoPresenterOutput, CreateTodoPresenterOutput, ServerTodoPresenterFactory } from "./ports";
+import { CreateTodoInteractorOutput, ListTodoInteractorOutput, TodoDom, TodoOps, ToggleTodoInteractorOutput } from "./deps";
+import { Encoder, ListTodoPresenterOutput, CreateTodoPresenterOutput, ServerTodoPresenterFactory, ToggleTodoPresenterOutput } from "./ports";
 
 export class ServerTodoPresenter<Todo extends TodoDom, ServerError, InnerError> implements ServerTodoPresenterFactory<Todo['Entity'], ServerError, InnerError> {
   constructor(
@@ -28,6 +28,13 @@ export class ServerTodoPresenter<Todo extends TodoDom, ServerError, InnerError> 
             }))
           }
           : { success: false, error: this.errorHandler(response.error) }),
+    }
+  }
+
+  toggleTodo(view: ToggleTodoPresenterOutput<ServerError>): ToggleTodoInteractorOutput<InnerError> {
+    return {
+      render: (response) => view.render(response.success ?
+        { success: true, completed: response.completed } : { success: false, error: this.errorHandler(response.error) }),
     }
   }
 

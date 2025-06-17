@@ -1,8 +1,8 @@
-import { TodoDom, TodoOps } from "../deps";
-import { CreateTodoInteractorInput, CreateTodoInput, CreateTodoInteractorOutput, TodoRepository } from "../ports";
+import { TodoLogic, TodoLogicDom } from "../deps";
+import { CreateTodoInput, CreateTodoInteractorInput, CreateTodoInteractorOutput, TodoRepository } from "../ports";
 
-export class CreateTodoInteractorImpl<Todo extends TodoDom> implements CreateTodoInteractorInput {
-  constructor(private todoRepository: TodoRepository<Todo>, private presenter: CreateTodoInteractorOutput<Todo['Entity'], 'StoringError'>, private ops: TodoOps<Todo>) { }
+export class CreateTodoInteractorImpl<Todo extends TodoLogicDom> implements CreateTodoInteractorInput {
+  constructor(private todoRepository: TodoRepository<Todo>, private presenter: CreateTodoInteractorOutput<Todo['Entity'], 'StoringError'>, private ops: TodoLogic<Todo>) { }
 
   async execute(input: CreateTodoInput) {
     if (!input.label.trim()) {

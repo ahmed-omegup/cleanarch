@@ -2,7 +2,7 @@ import { createHTTPServer } from "@trpc/server/adapters/standalone";
 import cors from 'cors';
 import { makeRouter } from "../../utils/network";
 import { API, ServerError } from "./config";
-import {  Encoder, ServerTodoController, ServerTodoPresenter, TodoInteractorFactoryImpl, todoInMemoryRepository, todoRoutes, TodoDom, TodoOps, AppRouter } from './server.deps';
+import {  Encoder, ServerTodoController, ServerTodoPresenter, TodoInteractorFactoryImpl, todoInMemoryRepository, todoRoutes, AppRouter, Todo, ops } from './server.deps';
 
 
 const id = <T,>(x: T) => x;
@@ -11,31 +11,12 @@ const refEncoder: Encoder<string> = {
   encode: id,
 };
 
-type TodoModel = {
-  label: string;
-  completed: boolean;
-}
-type Todo = TodoDom & {
-  Ref: string;
-  Entity: [string, TodoModel];
-  Model: TodoModel;
-};
 
-const ops: TodoOps<Todo> = {
-  getTitle: (todo) => todo.label,
-  isCompleted: (todo) => todo.completed,
-  toggle: (todo) => ({ ...todo, completed: !todo.completed }),
-  create: (label, completed) => ({ label, completed }),
-  entity: (todo, ref) => [ref, todo],
-  model: ([, todo]) => todo,
-  ref: ([ref]) => ref,
-}
-
-const todoRepository = todoInMemoryRepository<Todo>(ops, () => Math.random().toString(36).substring(2, 15));
+const todoRepository = todoInMemoryRepository<Todo['Model'], Todo['Ref']>(() => Math.random().toString(36).substring(2, 15));
 const todoFactory = new TodoInteractorFactoryImpl(todoRepository, ops)
 const todoPresenter = new ServerTodoPresenter<Todo, 'UnknownError', 'StoringError'>(refEncoder, ops, () => 'UnknownError');
 
-const routes = todoRoutes(new ServerTodoController(todoFactory), todoPresenter);
+const routes = todoRoutes(new ServerTodoController<Todo['Entity'], Todo['Ref'], 'StoringError'>(todoFactory, id), todoPresenter);
 const router: AppRouter<ServerError> = makeRouter(routes);
 
 const { host, port } = API;

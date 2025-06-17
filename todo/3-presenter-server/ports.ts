@@ -1,4 +1,4 @@
-import { CreateTodoInteractorOutput, ListTodoInteractorOutput, TodoDom } from "./deps";
+import { CreateTodoInteractorOutput, ListTodoInteractorOutput, TodoDom, ToggleTodoInteractorOutput } from "./deps";
 
 
 export type Encoder<T> = {
@@ -28,8 +28,19 @@ export interface ListTodoPresenterOutput<Error> {
   render(response: ListTodoResponse<Error>): void;
 }
 
+export type ToggleTodoResponse<Error> =
+  | { success: true; completed: boolean; }
+  | { success: false; error: Error };
+
+
+export interface ToggleTodoPresenterOutput<Error> {
+  render(response: ToggleTodoResponse<Error>): void;
+}
+
+
 export interface ServerTodoPresenterFactory<TodoEntity extends TodoDom['Entity'], ServerError, InnerError> {
   createTodo(view: CreateTodoPresenterOutput<ServerError>): CreateTodoInteractorOutput<TodoEntity, InnerError>;
   listTodo(view: ListTodoPresenterOutput<ServerError>): ListTodoInteractorOutput<TodoEntity, InnerError>;
+  toggleTodo(view: ToggleTodoPresenterOutput<ServerError>): ToggleTodoInteractorOutput<InnerError>;
 }
 
