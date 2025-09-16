@@ -1,5 +1,4 @@
-import { TodoDom } from "../1-entities";
-import { CreateTodoInteractorOutput, ListTodoInteractorOutput, ToggleTodoInteractorOutput } from "./deps";
+import { TodoDom, CreateTodoInteractorOutput, ListTodoInteractorOutput, ToggleTodoInteractorOutput } from "./deps";
 
 
 export type Encoder<T> = {

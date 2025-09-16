@@ -1,7 +1,5 @@
-import { TodoDom, TodoOps } from "../1-entities";
-import { CreateTodoInteractorOutput, ListTodoInteractorOutput, ToggleTodoInteractorOutput } from "./deps";
-import { Encoder, ListTodoPresenterOutput, ToggleTodoPresenterOutput } from "./ports";
-import { CreateTodoPresenterOutput, TodoPresenterFactory } from "./ports";
+import { TodoDom, TodoOps, CreateTodoInteractorOutput, ListTodoInteractorOutput, ToggleTodoInteractorOutput } from "./deps";
+import { Encoder, ListTodoPresenterOutput, ToggleTodoPresenterOutput, CreateTodoPresenterOutput, TodoPresenterFactory } from "./ports";
 
 export class TodoPresenter<Todo extends TodoDom, Error> implements TodoPresenterFactory<Todo['Entity'], Error> {
   constructor(

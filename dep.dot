@@ -1,0 +1,165 @@
+strict digraph "dependency-cruiser output"{
+    rankdir="LR" splines="true" overlap="false" nodesep="0.16" ranksep="0.18" fontname="Helvetica-bold" fontsize="9" style="rounded,bold,filled" fillcolor="#ffffff" compound="true"
+    node [shape="box" style="rounded, filled" height="0.2" color="black" fillcolor="#ffffcc" fontcolor="black" fontname="Helvetica" fontsize="9"]
+    edge [arrowhead="normal" arrowsize="0.6" penwidth="2.0" color="#00000033" fontname="Helvetica" fontsize="9"]
+
+    ".dependency-cruiser.js" [label=<.dependency-cruiser.js> tooltip=".dependency-cruiser.js" URL=".dependency-cruiser.js" fillcolor="#ccffcc"]
+    "main.tsx" [label=<main.tsx> tooltip="main.tsx" URL="main.tsx" fillcolor="#bbfeff"]
+    "main.tsx" -> "todo/5-main/client.ts"
+    "main.tsx" -> "node_modules/.pnpm" [penwidth="1.0"]
+    subgraph "cluster_node_modules" {label="node_modules" "node_modules/.pnpm" [label=<.pnpm> tooltip=".pnpm" URL="https://www.npmjs.com/package/.pnpm" shape="box3d" fillcolor="#c40b0a1a" fontcolor="#c40b0a"] }
+    subgraph "cluster_todo" {label="todo" subgraph "cluster_todo/1-entities" {label="1-entities" "todo/1-entities/impl.ts" [label=<impl.ts> tooltip="impl.ts" URL="todo/1-entities/impl.ts" fillcolor="#ddfeff"] } }
+    "todo/1-entities/impl.ts" -> "todo/1-entities/ports.ts"
+    subgraph "cluster_todo" {label="todo" subgraph "cluster_todo/1-entities" {label="1-entities" "todo/1-entities/index.ts" [label=<index.ts> tooltip="index.ts" URL="todo/1-entities/index.ts" fillcolor="#ddfeff"] } }
+    "todo/1-entities/index.ts" -> "todo/1-entities/ports.ts" [arrowhead="inv"]
+    subgraph "cluster_todo" {label="todo" subgraph "cluster_todo/1-entities" {label="1-entities" "todo/1-entities/ports.ts" [label=<ports.ts> tooltip="ports.ts" URL="todo/1-entities/ports.ts" fillcolor="#ddfeff"] } }
+    subgraph "cluster_todo" {label="todo" subgraph "cluster_todo/2-interactor" {label="2-interactor" "todo/2-interactor/deps.ts" [label=<deps.ts> tooltip="deps.ts" URL="todo/2-interactor/deps.ts" fillcolor="#ddfeff"] } }
+    "todo/2-interactor/deps.ts" -> "todo/1-entities/index.ts" [arrowhead="inv"]
+    subgraph "cluster_todo" {label="todo" subgraph "cluster_todo/2-interactor" {label="2-interactor" subgraph "cluster_todo/2-interactor/impl" {label="impl" "todo/2-interactor/impl/CreateTodo.ts" [label=<CreateTodo.ts> tooltip="CreateTodo.ts" URL="todo/2-interactor/impl/CreateTodo.ts" fillcolor="#ddfeff"] } } }
+    "todo/2-interactor/impl/CreateTodo.ts" -> "todo/2-interactor/deps.ts"
+    "todo/2-interactor/impl/CreateTodo.ts" -> "todo/2-interactor/ports/index.ts"
+    subgraph "cluster_todo" {label="todo" subgraph "cluster_todo/2-interactor" {label="2-interactor" subgraph "cluster_todo/2-interactor/impl" {label="impl" "todo/2-interactor/impl/ListTodo.ts" [label=<ListTodo.ts> tooltip="ListTodo.ts" URL="todo/2-interactor/impl/ListTodo.ts" fillcolor="#ddfeff"] } } }
+    "todo/2-interactor/impl/ListTodo.ts" -> "todo/2-interactor/deps.ts"
+    "todo/2-interactor/impl/ListTodo.ts" -> "todo/2-interactor/ports/index.ts"
+    subgraph "cluster_todo" {label="todo" subgraph "cluster_todo/2-interactor" {label="2-interactor" subgraph "cluster_todo/2-interactor/impl" {label="impl" "todo/2-interactor/impl/TodoFactory.ts" [label=<TodoFactory.ts> tooltip="TodoFactory.ts" URL="todo/2-interactor/impl/TodoFactory.ts" fillcolor="#ddfeff"] } } }
+    "todo/2-interactor/impl/TodoFactory.ts" -> "todo/2-interactor/deps.ts"
+    "todo/2-interactor/impl/TodoFactory.ts" -> "todo/2-interactor/ports/index.ts"
+    "todo/2-interactor/impl/TodoFactory.ts" -> "todo/2-interactor/ports/TodoRepository.ts"
+    "todo/2-interactor/impl/TodoFactory.ts" -> "todo/2-interactor/impl/CreateTodo.ts"
+    "todo/2-interactor/impl/TodoFactory.ts" -> "todo/2-interactor/impl/ListTodo.ts"
+    "todo/2-interactor/impl/TodoFactory.ts" -> "todo/2-interactor/impl/ToggleTodo.ts"
+    subgraph "cluster_todo" {label="todo" subgraph "cluster_todo/2-interactor" {label="2-interactor" subgraph "cluster_todo/2-interactor/impl" {label="impl" "todo/2-interactor/impl/ToggleTodo.ts" [label=<ToggleTodo.ts> tooltip="ToggleTodo.ts" URL="todo/2-interactor/impl/ToggleTodo.ts" fillcolor="#ddfeff"] } } }
+    "todo/2-interactor/impl/ToggleTodo.ts" -> "todo/2-interactor/deps.ts"
+    "todo/2-interactor/impl/ToggleTodo.ts" -> "todo/2-interactor/ports/index.ts"
+    subgraph "cluster_todo" {label="todo" subgraph "cluster_todo/2-interactor" {label="2-interactor" subgraph "cluster_todo/2-interactor/impl" {label="impl" "todo/2-interactor/impl/index.ts" [label=<index.ts> tooltip="index.ts" URL="todo/2-interactor/impl/index.ts" fillcolor="#ddfeff"] } } }
+    "todo/2-interactor/impl/index.ts" -> "todo/2-interactor/impl/CreateTodo.ts" [arrowhead="inv"]
+    "todo/2-interactor/impl/index.ts" -> "todo/2-interactor/impl/ListTodo.ts" [arrowhead="inv"]
+    "todo/2-interactor/impl/index.ts" -> "todo/2-interactor/impl/TodoFactory.ts" [arrowhead="inv"]
+    subgraph "cluster_todo" {label="todo" subgraph "cluster_todo/2-interactor" {label="2-interactor" "todo/2-interactor/index.ts" [label=<index.ts> tooltip="index.ts" URL="todo/2-interactor/index.ts" fillcolor="#ddfeff"] } }
+    "todo/2-interactor/index.ts" -> "todo/2-interactor/ports/index.ts" [arrowhead="inv"]
+    subgraph "cluster_todo" {label="todo" subgraph "cluster_todo/2-interactor" {label="2-interactor" subgraph "cluster_todo/2-interactor/ports" {label="ports" "todo/2-interactor/ports/CreateTodo.ts" [label=<CreateTodo.ts> tooltip="CreateTodo.ts" URL="todo/2-interactor/ports/CreateTodo.ts" fillcolor="#ddfeff"] } } }
+    subgraph "cluster_todo" {label="todo" subgraph "cluster_todo/2-interactor" {label="2-interactor" subgraph "cluster_todo/2-interactor/ports" {label="ports" "todo/2-interactor/ports/Factory.ts" [label=<Factory.ts> tooltip="Factory.ts" URL="todo/2-interactor/ports/Factory.ts" fillcolor="#ddfeff"] } } }
+    subgraph "cluster_todo" {label="todo" subgraph "cluster_todo/2-interactor" {label="2-interactor" subgraph "cluster_todo/2-interactor/ports" {label="ports" "todo/2-interactor/ports/ListTodo.ts" [label=<ListTodo.ts> tooltip="ListTodo.ts" URL="todo/2-interactor/ports/ListTodo.ts" fillcolor="#ddfeff"] } } }
+    subgraph "cluster_todo" {label="todo" subgraph "cluster_todo/2-interactor" {label="2-interactor" subgraph "cluster_todo/2-interactor/ports" {label="ports" "todo/2-interactor/ports/TodoRepository.ts" [label=<TodoRepository.ts> tooltip="TodoRepository.ts" URL="todo/2-interactor/ports/TodoRepository.ts" fillcolor="#ddfeff"] } } }
+    subgraph "cluster_todo" {label="todo" subgraph "cluster_todo/2-interactor" {label="2-interactor" subgraph "cluster_todo/2-interactor/ports" {label="ports" "todo/2-interactor/ports/ToggleTodo.ts" [label=<ToggleTodo.ts> tooltip="ToggleTodo.ts" URL="todo/2-interactor/ports/ToggleTodo.ts" fillcolor="#ddfeff"] } } }
+    subgraph "cluster_todo" {label="todo" subgraph "cluster_todo/2-interactor" {label="2-interactor" subgraph "cluster_todo/2-interactor/ports" {label="ports" "todo/2-interactor/ports/index.ts" [label=<index.ts> tooltip="index.ts" URL="todo/2-interactor/ports/index.ts" fillcolor="#ddfeff"] } } }
+    "todo/2-interactor/ports/index.ts" -> "todo/2-interactor/ports/CreateTodo.ts" [arrowhead="inv"]
+    "todo/2-interactor/ports/index.ts" -> "todo/2-interactor/ports/Factory.ts" [arrowhead="inv"]
+    "todo/2-interactor/ports/index.ts" -> "todo/2-interactor/ports/ListTodo.ts" [arrowhead="inv"]
+    "todo/2-interactor/ports/index.ts" -> "todo/2-interactor/ports/TodoRepository.ts" [arrowhead="inv"]
+    "todo/2-interactor/ports/index.ts" -> "todo/2-interactor/ports/ToggleTodo.ts" [arrowhead="inv"]
+    subgraph "cluster_todo" {label="todo" subgraph "cluster_todo/3-controller-server" {label="3-controller-server" "todo/3-controller-server/deps.ts" [label=<deps.ts> tooltip="deps.ts" URL="todo/3-controller-server/deps.ts" fillcolor="#ddfeff"] } }
+    "todo/3-controller-server/deps.ts" -> "todo/1-entities/index.ts" [arrowhead="inv"]
+    "todo/3-controller-server/deps.ts" -> "todo/2-interactor/index.ts" [arrowhead="inv"]
+    subgraph "cluster_todo" {label="todo" subgraph "cluster_todo/3-controller-server" {label="3-controller-server" "todo/3-controller-server/impl.ts" [label=<impl.ts> tooltip="impl.ts" URL="todo/3-controller-server/impl.ts" fillcolor="#ddfeff"] } }
+    "todo/3-controller-server/impl.ts" -> "todo/3-controller-server/deps.ts"
+    "todo/3-controller-server/impl.ts" -> "todo/3-controller-server/ports.ts"
+    subgraph "cluster_todo" {label="todo" subgraph "cluster_todo/3-controller-server" {label="3-controller-server" "todo/3-controller-server/index.ts" [label=<index.ts> tooltip="index.ts" URL="todo/3-controller-server/index.ts" fillcolor="#ddfeff"] } }
+    "todo/3-controller-server/index.ts" -> "todo/3-controller-server/ports.ts" [arrowhead="inv"]
+    subgraph "cluster_todo" {label="todo" subgraph "cluster_todo/3-controller-server" {label="3-controller-server" "todo/3-controller-server/ports.ts" [label=<ports.ts> tooltip="ports.ts" URL="todo/3-controller-server/ports.ts" fillcolor="#ddfeff"] } }
+    "todo/3-controller-server/ports.ts" -> "todo/3-controller-server/deps.ts"
+    subgraph "cluster_todo" {label="todo" subgraph "cluster_todo/3-controller" {label="3-controller" "todo/3-controller/deps.ts" [label=<deps.ts> tooltip="deps.ts" URL="todo/3-controller/deps.ts" fillcolor="#ddfeff"] } }
+    "todo/3-controller/deps.ts" -> "todo/1-entities/index.ts" [arrowhead="inv"]
+    "todo/3-controller/deps.ts" -> "todo/2-interactor/index.ts" [arrowhead="inv"]
+    subgraph "cluster_todo" {label="todo" subgraph "cluster_todo/3-controller" {label="3-controller" "todo/3-controller/impl.ts" [label=<impl.ts> tooltip="impl.ts" URL="todo/3-controller/impl.ts" fillcolor="#ddfeff"] } }
+    "todo/3-controller/impl.ts" -> "todo/3-controller/deps.ts"
+    "todo/3-controller/impl.ts" -> "todo/3-controller/ports.ts"
+    subgraph "cluster_todo" {label="todo" subgraph "cluster_todo/3-controller" {label="3-controller" "todo/3-controller/index.ts" [label=<index.ts> tooltip="index.ts" URL="todo/3-controller/index.ts" fillcolor="#ddfeff"] } }
+    "todo/3-controller/index.ts" -> "todo/3-controller/ports.ts" [arrowhead="inv"]
+    subgraph "cluster_todo" {label="todo" subgraph "cluster_todo/3-controller" {label="3-controller" "todo/3-controller/ports.ts" [label=<ports.ts> tooltip="ports.ts" URL="todo/3-controller/ports.ts" fillcolor="#ddfeff"] } }
+    "todo/3-controller/ports.ts" -> "todo/3-controller/deps.ts"
+    subgraph "cluster_todo" {label="todo" subgraph "cluster_todo/3-database" {label="3-database" "todo/3-database/deps.ts" [label=<deps.ts> tooltip="deps.ts" URL="todo/3-database/deps.ts" fillcolor="#ddfeff"] } }
+    "todo/3-database/deps.ts" -> "todo/1-entities/index.ts" [arrowhead="inv"]
+    "todo/3-database/deps.ts" -> "todo/2-interactor/index.ts" [arrowhead="inv"]
+    subgraph "cluster_todo" {label="todo" subgraph "cluster_todo/3-database" {label="3-database" "todo/3-database/memory.ts" [label=<memory.ts> tooltip="memory.ts" URL="todo/3-database/memory.ts" fillcolor="#ddfeff"] } }
+    "todo/3-database/memory.ts" -> "todo/3-database/deps.ts"
+    subgraph "cluster_todo" {label="todo" subgraph "cluster_todo/3-presenter-server" {label="3-presenter-server" "todo/3-presenter-server/deps.ts" [label=<deps.ts> tooltip="deps.ts" URL="todo/3-presenter-server/deps.ts" fillcolor="#ddfeff"] } }
+    "todo/3-presenter-server/deps.ts" -> "todo/1-entities/index.ts" [arrowhead="inv"]
+    "todo/3-presenter-server/deps.ts" -> "todo/2-interactor/index.ts" [arrowhead="inv"]
+    subgraph "cluster_todo" {label="todo" subgraph "cluster_todo/3-presenter-server" {label="3-presenter-server" "todo/3-presenter-server/impl.ts" [label=<impl.ts> tooltip="impl.ts" URL="todo/3-presenter-server/impl.ts" fillcolor="#ddfeff"] } }
+    "todo/3-presenter-server/impl.ts" -> "todo/3-presenter-server/deps.ts"
+    "todo/3-presenter-server/impl.ts" -> "todo/3-presenter-server/ports.ts"
+    subgraph "cluster_todo" {label="todo" subgraph "cluster_todo/3-presenter-server" {label="3-presenter-server" "todo/3-presenter-server/index.ts" [label=<index.ts> tooltip="index.ts" URL="todo/3-presenter-server/index.ts" fillcolor="#ddfeff"] } }
+    "todo/3-presenter-server/index.ts" -> "todo/3-presenter-server/ports.ts" [arrowhead="inv"]
+    subgraph "cluster_todo" {label="todo" subgraph "cluster_todo/3-presenter-server" {label="3-presenter-server" "todo/3-presenter-server/ports.ts" [label=<ports.ts> tooltip="ports.ts" URL="todo/3-presenter-server/ports.ts" fillcolor="#ddfeff"] } }
+    "todo/3-presenter-server/ports.ts" -> "todo/3-presenter-server/deps.ts"
+    subgraph "cluster_todo" {label="todo" subgraph "cluster_todo/3-presenter" {label="3-presenter" "todo/3-presenter/deps.ts" [label=<deps.ts> tooltip="deps.ts" URL="todo/3-presenter/deps.ts" fillcolor="#ddfeff"] } }
+    "todo/3-presenter/deps.ts" -> "todo/1-entities/index.ts" [arrowhead="onormal" penwidth="1.0"]
+    "todo/3-presenter/deps.ts" -> "todo/2-interactor/index.ts" [arrowhead="inv"]
+    subgraph "cluster_todo" {label="todo" subgraph "cluster_todo/3-presenter" {label="3-presenter" "todo/3-presenter/impl.ts" [label=<impl.ts> tooltip="impl.ts" URL="todo/3-presenter/impl.ts" fillcolor="#ddfeff"] } }
+    "todo/3-presenter/impl.ts" -> "todo/3-presenter/deps.ts"
+    "todo/3-presenter/impl.ts" -> "todo/3-presenter/ports.ts"
+    subgraph "cluster_todo" {label="todo" subgraph "cluster_todo/3-presenter" {label="3-presenter" "todo/3-presenter/index.ts" [label=<index.ts> tooltip="index.ts" URL="todo/3-presenter/index.ts" fillcolor="#ddfeff"] } }
+    "todo/3-presenter/index.ts" -> "todo/3-presenter/ports.ts" [arrowhead="inv"]
+    subgraph "cluster_todo" {label="todo" subgraph "cluster_todo/3-presenter" {label="3-presenter" "todo/3-presenter/ports.ts" [label=<ports.ts> tooltip="ports.ts" URL="todo/3-presenter/ports.ts" fillcolor="#ddfeff"] } }
+    "todo/3-presenter/ports.ts" -> "todo/3-presenter/deps.ts"
+    subgraph "cluster_todo" {label="todo" subgraph "cluster_todo/3-remote-interactor" {label="3-remote-interactor" "todo/3-remote-interactor/deps.ts" [label=<deps.ts> tooltip="deps.ts" URL="todo/3-remote-interactor/deps.ts" fillcolor="#ddfeff"] } }
+    "todo/3-remote-interactor/deps.ts" -> "todo/1-entities/index.ts" [arrowhead="inv"]
+    "todo/3-remote-interactor/deps.ts" -> "todo/2-interactor/index.ts" [arrowhead="inv"]
+    subgraph "cluster_todo" {label="todo" subgraph "cluster_todo/3-remote-interactor" {label="3-remote-interactor" "todo/3-remote-interactor/impl.ts" [label=<impl.ts> tooltip="impl.ts" URL="todo/3-remote-interactor/impl.ts" fillcolor="#ddfeff"] } }
+    "todo/3-remote-interactor/impl.ts" -> "todo/3-remote-interactor/deps.ts"
+    "todo/3-remote-interactor/impl.ts" -> "todo/3-remote-interactor/ports.ts"
+    subgraph "cluster_todo" {label="todo" subgraph "cluster_todo/3-remote-interactor" {label="3-remote-interactor" "todo/3-remote-interactor/index.ts" [label=<index.ts> tooltip="index.ts" URL="todo/3-remote-interactor/index.ts" fillcolor="#ddfeff"] } }
+    "todo/3-remote-interactor/index.ts" -> "todo/3-remote-interactor/ports.ts" [arrowhead="inv"]
+    subgraph "cluster_todo" {label="todo" subgraph "cluster_todo/3-remote-interactor" {label="3-remote-interactor" "todo/3-remote-interactor/ports.ts" [label=<ports.ts> tooltip="ports.ts" URL="todo/3-remote-interactor/ports.ts" fillcolor="#ddfeff"] } }
+    "todo/3-remote-interactor/ports.ts" -> "todo/3-remote-interactor/deps.ts"
+    subgraph "cluster_todo" {label="todo" subgraph "cluster_todo/4-network" {label="4-network" "todo/4-network/client.ts" [label=<client.ts> tooltip="client.ts" URL="todo/4-network/client.ts" fillcolor="#ddfeff"] } }
+    "todo/4-network/client.ts" -> "todo/4-network/deps.ts"
+    subgraph "cluster_todo" {label="todo" subgraph "cluster_todo/4-network" {label="4-network" "todo/4-network/deps.ts" [label=<deps.ts> tooltip="deps.ts" URL="todo/4-network/deps.ts" fillcolor="#ddfeff"] } }
+    "todo/4-network/deps.ts" -> "todo/1-entities/index.ts" [arrowhead="inv"]
+    "todo/4-network/deps.ts" -> "todo/3-controller-server/index.ts" [arrowhead="inv"]
+    "todo/4-network/deps.ts" -> "todo/3-presenter-server/index.ts" [arrowhead="inv"]
+    "todo/4-network/deps.ts" -> "todo/3-remote-interactor/index.ts" [arrowhead="inv"]
+    subgraph "cluster_todo" {label="todo" subgraph "cluster_todo/4-network" {label="4-network" subgraph "cluster_todo/4-network/shared" {label="shared" "todo/4-network/shared/api.ts" [label=<api.ts> tooltip="api.ts" URL="todo/4-network/shared/api.ts" fillcolor="#ddfeff"] } } }
+    "todo/4-network/shared/api.ts" -> "utils/network.ts"
+    "todo/4-network/shared/api.ts" -> "todo/4-network/shared/routes.ts"
+    subgraph "cluster_todo" {label="todo" subgraph "cluster_todo/4-network" {label="4-network" subgraph "cluster_todo/4-network/shared" {label="shared" "todo/4-network/shared/index.ts" [label=<index.ts> tooltip="index.ts" URL="todo/4-network/shared/index.ts" fillcolor="#ddfeff"] } } }
+    "todo/4-network/shared/index.ts" -> "todo/4-network/shared/api.ts" [arrowhead="inv"]
+    "todo/4-network/shared/index.ts" -> "todo/4-network/shared/routes.ts" [arrowhead="inv"]
+    subgraph "cluster_todo" {label="todo" subgraph "cluster_todo/4-network" {label="4-network" subgraph "cluster_todo/4-network/shared" {label="shared" "todo/4-network/shared/routes.ts" [label=<routes.ts> tooltip="routes.ts" URL="todo/4-network/shared/routes.ts" fillcolor="#ddfeff"] } } }
+    "todo/4-network/shared/routes.ts" -> "utils/route.ts"
+    "todo/4-network/shared/routes.ts" -> "todo/4-network/deps.ts"
+    "todo/4-network/shared/routes.ts" -> "node_modules/.pnpm" [penwidth="1.0"]
+    subgraph "cluster_todo" {label="todo" subgraph "cluster_todo/4-view" {label="4-view" "todo/4-view/AddTodo.tsx" [label=<AddTodo.tsx> tooltip="AddTodo.tsx" URL="todo/4-view/AddTodo.tsx" fillcolor="#bbfeff"] } }
+    "todo/4-view/AddTodo.tsx" -> "todo/4-view/deps.ts"
+    "todo/4-view/AddTodo.tsx" -> "node_modules/.pnpm" [penwidth="1.0"]
+    subgraph "cluster_todo" {label="todo" subgraph "cluster_todo/4-view" {label="4-view" "todo/4-view/TodoApp.tsx" [label=<TodoApp.tsx> tooltip="TodoApp.tsx" URL="todo/4-view/TodoApp.tsx" fillcolor="#bbfeff"] } }
+    "todo/4-view/TodoApp.tsx" -> "todo/4-view/AddTodo.tsx"
+    "todo/4-view/TodoApp.tsx" -> "todo/4-view/TodoList.tsx"
+    "todo/4-view/TodoApp.tsx" -> "node_modules/.pnpm" [penwidth="1.0"]
+    subgraph "cluster_todo" {label="todo" subgraph "cluster_todo/4-view" {label="4-view" "todo/4-view/TodoItem.tsx" [label=<TodoItem.tsx> tooltip="TodoItem.tsx" URL="todo/4-view/TodoItem.tsx" fillcolor="#bbfeff"] } }
+    subgraph "cluster_todo" {label="todo" subgraph "cluster_todo/4-view" {label="4-view" "todo/4-view/TodoList.tsx" [label=<TodoList.tsx> tooltip="TodoList.tsx" URL="todo/4-view/TodoList.tsx" fillcolor="#bbfeff"] } }
+    "todo/4-view/TodoList.tsx" -> "todo/4-view/deps.ts"
+    "todo/4-view/TodoList.tsx" -> "todo/4-view/TodoItem.tsx"
+    "todo/4-view/TodoList.tsx" -> "node_modules/.pnpm" [penwidth="1.0"]
+    subgraph "cluster_todo" {label="todo" subgraph "cluster_todo/4-view" {label="4-view" "todo/4-view/deps.ts" [label=<deps.ts> tooltip="deps.ts" URL="todo/4-view/deps.ts" fillcolor="#ddfeff"] } }
+    "todo/4-view/deps.ts" -> "todo/3-controller/index.ts" [arrowhead="inv"]
+    "todo/4-view/deps.ts" -> "todo/3-presenter/index.ts" [arrowhead="inv"]
+    subgraph "cluster_todo" {label="todo" subgraph "cluster_todo/4-view" {label="4-view" "todo/4-view/index.ts" [label=<index.ts> tooltip="index.ts" URL="todo/4-view/index.ts" fillcolor="#ddfeff"] } }
+    "todo/4-view/index.ts" -> "todo/4-view/TodoApp.tsx" [arrowhead="inv"]
+    subgraph "cluster_todo" {label="todo" subgraph "cluster_todo/5-main" {label="5-main" "todo/5-main/client.deps.ts" [label=<client.deps.ts> tooltip="client.deps.ts" URL="todo/5-main/client.deps.ts" fillcolor="#ddfeff"] } }
+    subgraph "cluster_todo" {label="todo" subgraph "cluster_todo/5-main" {label="5-main" "todo/5-main/client.ts" [label=<client.ts> tooltip="client.ts" URL="todo/5-main/client.ts" fillcolor="#ddfeff"] } }
+    "todo/5-main/client.ts" -> "todo/5-main/client.deps.ts"
+    "todo/5-main/client.ts" -> "todo/5-main/config.ts"
+    "todo/5-main/client.ts" -> "node_modules/.pnpm" [penwidth="1.0"]
+    subgraph "cluster_todo" {label="todo" subgraph "cluster_todo/5-main" {label="5-main" "todo/5-main/config.ts" [label=<config.ts> tooltip="config.ts" URL="todo/5-main/config.ts" fillcolor="#ddfeff"] } }
+    subgraph "cluster_todo" {label="todo" subgraph "cluster_todo/5-main" {label="5-main" "todo/5-main/server.deps.ts" [label=<server.deps.ts> tooltip="server.deps.ts" URL="todo/5-main/server.deps.ts" fillcolor="#ddfeff"] } }
+    "todo/5-main/server.deps.ts" -> "todo/1-entities/impl.ts" [arrowhead="inv"]
+    "todo/5-main/server.deps.ts" -> "todo/2-interactor/impl/index.ts" [arrowhead="inv"]
+    "todo/5-main/server.deps.ts" -> "todo/3-controller-server/impl.ts" [arrowhead="inv"]
+    "todo/5-main/server.deps.ts" -> "todo/3-database/memory.ts" [arrowhead="inv"]
+    "todo/5-main/server.deps.ts" -> "todo/3-presenter-server/index.ts" [arrowhead="onormal" penwidth="1.0"]
+    "todo/5-main/server.deps.ts" -> "todo/3-presenter-server/impl.ts" [arrowhead="inv"]
+    "todo/5-main/server.deps.ts" -> "todo/4-network/shared/index.ts" [arrowhead="inv"]
+    subgraph "cluster_todo" {label="todo" subgraph "cluster_todo/5-main" {label="5-main" "todo/5-main/server.ts" [label=<server.ts> tooltip="server.ts" URL="todo/5-main/server.ts" fillcolor="#ddfeff"] } }
+    "todo/5-main/server.ts" -> "utils/network.ts"
+    "todo/5-main/server.ts" -> "todo/5-main/config.ts"
+    "todo/5-main/server.ts" -> "todo/5-main/server.deps.ts"
+    "todo/5-main/server.ts" -> "node_modules/.pnpm" [penwidth="1.0"]
+    subgraph "cluster_utils" {label="utils" "utils/network.ts" [label=<network.ts> tooltip="network.ts" URL="utils/network.ts" fillcolor="#ddfeff"] }
+    "utils/network.ts" -> "utils/route.ts"
+    "utils/network.ts" -> "node_modules/.pnpm" [penwidth="1.0"]
+    subgraph "cluster_utils" {label="utils" "utils/route.ts" [label=<route.ts> tooltip="route.ts" URL="utils/route.ts" fillcolor="#ddfeff"] }
+    "vite.config.ts" [label=<vite.config.ts> tooltip="vite.config.ts" URL="vite.config.ts" fillcolor="#ddfeff"]
+    "vite.config.ts" -> "node_modules/.pnpm" [xlabel="not-to-dev-dep" tooltip="not-to-dev-dep" penwidth="1.0" fontcolor="red" color="red"]
+}
